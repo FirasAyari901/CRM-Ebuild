@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "path": "/table/clients",
+      "title": "Customers",
+      "icon": "users",
+      "type": "link",
+      "bookmark": true
+    },
+    {
+      "path": "/table/stuff",
+      "title": "Stuff",
+      "icon": "users",
+      "type": "link",
+      "bookmark": true
+    },
+    {
+      "path": "/form/form",
+      "title": "Form",
+      "icon": "mail",
+      "type": "link",
+      "bookmark": true
+    }
+    
+  ]
+}
