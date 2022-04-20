@@ -12,7 +12,15 @@ import FormWizrd from '../pages/forms/form_wizard';
 /* Authentication */
 import LoginValidate from '../pages/authentication/login_with_validation';
 import ResetPassword from '../pages/authentication/reset_password';
+import projectlist from '../pages/project/project-list';
+import Bookmark from '../pages/bookmark';
+import Creative from '../pages/cards/creative';
+import OrderHistory from '../pages/ecommerce/order_history';
+import Tickets from '../pages/tickets';
+import Documents from '../pages/document';
 
+
+ 
 
 // component
 
@@ -21,7 +29,7 @@ Vue.use(Router);
 const routes = [
 { path: '', redirect: { name: 'LoginValidate' } },
 {
-  path: '/table',
+  path: '/app',
   component: Body, 
   children: [
 
@@ -32,11 +40,48 @@ const routes = [
      
   },
   {
-    path: 'clients',
+    path: 'customers',
     name: 'FilterTable',
     component: Clients,
      
   },
+  {
+    path: 'projects',
+    name: 'FilterTable',
+    component: projectlist,
+  
+  },
+  {
+    path: 'teams',
+    name: 'FilterTable',
+    component: Bookmark,
+  
+  },
+  {
+    path: 'operations',
+    name: 'FilterTable',
+    component: OrderHistory,
+  
+  },
+  {
+    path: 'substasks',
+    name: 'FilterTable',
+    component: Creative,
+  
+  },
+  {
+    path: 'tickets',
+    name: 'FilterTable',
+    component: Tickets,
+  
+  },
+  {
+    path: 'documents',
+    name: 'FilterTable',
+    component: Documents,
+  
+  },
+
   ]
 },
 {

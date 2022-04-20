@@ -13,13 +13,13 @@
                     <div class="card-body">
                       <b-row>
                         <b-col xl="6">
-                         <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add client</b-button>
+                         <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add Customer</b-button>
                            <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                              <div class="card">
                         <div class="card-header">
-                            <h5>Add client</h5>
+                            <h5>Add Customer</h5>
                         </div>
-                                             <div>
+                      <div>
     <b-form @submit.stop.prevent="onSubmit">
       <b-form-group id="example-input-group-1" label="Name" label-for="example-input-1">
         <b-form-input

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <Breadcrumbs main="Project" title="Projects List" />
-    <!-- Container-fluid starts-->
+    <br><br>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 project-list">
@@ -20,61 +19,31 @@
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in allprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box">
-                                  <span class="badge" :class="'badge-'+project.type">{{ project.badge }}</span>
+                                 
+                              
+                                  <span class="badge" :class="'badge-'+project.type">
+                                    {{ project.badge }}</span>
                                   <h6>{{ project.title }}</h6>
                                   <div class="media">
                                     <img class="img-20 mr-1 rounded-circle" :src='getImgUrl(project.img)' alt="" title="">
                                     <div class="media-body">
-                                      <p>{{ project.sites }}</p>
+                                      <p>{{ project.sites }} </p>
                                     </div>
                                   </div>
                                   <p>{{ project.desc }}</p>
                                   <div class="row details">
                                     <div class="col-6">
-                                      <span>Issues </span>
-                                    </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.issue }}</div>
+                                      <span>start date </span>
+                                    </div>  
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.startdate }}</div>
                                     <div class="col-6">
-                                      <span>Resolved</span>
+                                      <span>deadline</span>
                                     </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.resolved }}</div>
-                                    <div class="col-6">
-                                      <span>Comment</span>
-                                    </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.comment }}</div>
-                                  </div>
-                                  <div class="customers">
-                                    <ul>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img1)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img2)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img3)' alt="" title=""></li>
-                                      <li class="d-inline-block ml-2">
-                                        <p class="f-12">+10 More</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div class="project-status mt-4">
-                                    <div class="media mb-0">
-                                      <p>{{project.progress}}%</p>
-                                      <div class="media-body text-right">
-                                        <span>Done</span>
-                                      </div>
-                                    </div>
-                                    <div class="progress" style="height: 5px">
-                                      <div
-                                        class="progress-bar-animated progress-bar-striped"
-                                        :class="'bg-'+project.type"
-                                        role="progressbar"
-                                        :style= "{'width': project.progress + '%'}"
-                                        aria-valuenow="10"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                      ></div>
-                                    </div>
-                                  </div>
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.deadline }}</div>
+                                   </div>
+                                    <feather  type="edit" stroke="#ffcd01" ></feather> 
+                                     
+                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </div>
                               </div>
                             </div>
@@ -94,6 +63,7 @@
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in doingprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box">
+                                  
                                   <span class="badge" :class="'badge-'+project.type">{{ project.badge }}</span>
                                   <h6>{{ project.title }}</h6>
                                   <div class="media">
@@ -105,50 +75,16 @@
                                   <p>{{ project.desc }}</p>
                                   <div class="row details">
                                     <div class="col-6">
-                                      <span>Issues </span>
+                                      <span>start date </span>
                                     </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.issue }}</div>
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.startdate }}</div>
                                     <div class="col-6">
-                                      <span>Resolved</span>
+                                      <span>deadline</span>
                                     </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.resolved }}</div>
-                                    <div class="col-6">
-                                      <span>Comment</span>
-                                    </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.comment }}</div>
-                                  </div>
-                                  <div class="customers">
-                                    <ul>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img1)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img2)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img3)' alt="" title=""></li>
-                                      <li class="d-inline-block ml-2">
-                                        <p class="f-12">+10 More</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div class="project-status mt-4">
-                                    <div class="media mb-0">
-                                      <p>{{project.progress}}%</p>
-                                      <div class="media-body text-right">
-                                        <span>Done</span>
-                                      </div>
-                                    </div>
-                                    <div class="progress" style="height: 5px">
-                                      <div
-                                        class="progress-bar-animated progress-bar-striped"
-                                        :class="'bg-'+project.type"
-                                        role="progressbar"
-                                        :style= "{'width': project.progress + '%'}"
-                                        aria-valuenow="10"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                      ></div>
-                                    </div>
-                                  </div>
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.deadline }}</div>
+                                   </div>
+                                    <feather type="edit" stroke="#ffcd01" ></feather>   
+                                 <feather type="trash-2" stroke="red" ></feather>
                                 </div>
                               </div>
                             </div>
@@ -168,6 +104,7 @@
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in doneprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box">
+                                  
                                   <span class="badge" :class="'badge-'+project.type">{{ project.badge }}</span>
                                   <h6>{{ project.title }}</h6>
                                   <div class="media">
@@ -179,50 +116,17 @@
                                   <p>{{ project.desc }}</p>
                                   <div class="row details">
                                     <div class="col-6">
-                                      <span>Issues </span>
+                                      <span>start date </span>
                                     </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.issue }}</div>
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.startdate }}</div>
                                     <div class="col-6">
-                                      <span>Resolved</span>
+                                      <span>deadline</span>
                                     </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.resolved }}</div>
-                                    <div class="col-6">
-                                      <span>Comment</span>
-                                    </div>
-                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.comment }}</div>
-                                  </div>
-                                  <div class="customers">
-                                    <ul>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img1)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img2)' alt="" title=""></li>
-                                      <li class="d-inline-block">
-                                        <img class="img-30 rounded-circle" :src='getImgUrl(project.customers_img3)' alt="" title=""></li>
-                                      <li class="d-inline-block ml-2">
-                                        <p class="f-12">+10 More</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div class="project-status mt-4">
-                                    <div class="media mb-0">
-                                      <p>{{project.progress}}%</p>
-                                      <div class="media-body text-right">
-                                        <span>Done</span>
-                                      </div>
-                                    </div>
-                                    <div class="progress" style="height: 5px">
-                                      <div
-                                        class="progress-bar-animated progress-bar-striped"
-                                        :class="'bg-'+project.type"
-                                        role="progressbar"
-                                        :style= "{'width': project.progress + '%'}"
-                                        aria-valuenow="10"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                      ></div>
-                                    </div>
-                                  </div>
+                                    <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.deadline }}</div>
+                                   </div>
+                                    <feather type="edit" stroke="#ffcd01" ></feather>   
+                                 <feather type="trash-2" stroke="red" ></feather>
+                                  
                                 </div>
                               </div>
                             </div>
@@ -239,9 +143,50 @@
                   <!-- <a class="btn btn-primary" href="">
                     <i data-feather="plus-square"> </i>Create New Project</a
                   > -->
-                  <router-link to="create-project"><a class="btn btn-primary" href="">
-                    <i data-feather="plus-square"> </i>Create New Project</a
-                  ></router-link>
+                  <b-button class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg @click="$bvModal.show('bv-modal-example')" >
+                    <i data-feather="plus-square" > </i>Create New Project</b-button>
+                    <b-modal id="bv-modal-example" centered size="lg" hide-footer>                      
+                        <template #modal-title>
+                            Add Team
+                        </template>
+                      <div class="modal-body">
+                      <form class="form-bookmark needs-validation" id="bookmark-form" novalidate="">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="bm-weburl">description</label>
+                            <input class="form-control" id="bm-weburl" type="text" required="" autocomplete="off">
+                          </div>
+                          <div class="form-group col-md-12">
+                            <label for="bm-weburl">project name</label>
+                            <input class="form-control" id="bm-weburl" type="text" required="" autocomplete="off">
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label for="bm-weburl">start date</label>
+                             <datepicker input-class="datepicker-here form-control digits" :format="format" ></datepicker>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <label for="bm-weburl">deadline</label>
+                             <datepicker input-class="datepicker-here form-control digits" :format="format" ></datepicker>
+                          </div>
+                        <div class="form-group col-md-12">
+                        <div class="col-form-label">Select Team</div>
+                         <multiselect  v-model="limitMultiValue" tag-placeholder="Add this as new tag" placeholder="Teams" 
+                          label="name" track-by="code" :options="options" :multiple="false" :taggable="true" @tag="addTag"></multiselect>
+                         </div>
+                        <div class="form-group col-md-12">
+                            <label for="bm-weburl">file CDC</label>
+                            <input class="form-control" id="bm-weburl" type="file" required="" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="bm-weburl">Capture DC</label>
+                            <input class="form-control" id="bm-weburl" type="file" required="" autocomplete="off">
+                        </div>
+                        </div>
+                        <b-button class="btn "  onclick="submitBookMark()" type="submit" variant="secondary">Add</b-button>
+                      </form>
+                    </div>
+                    </b-modal>
                 </div>
               </div>
             </div>
@@ -255,10 +200,27 @@
 
 <script>
   import { mapState } from 'vuex';
-  
+  import Multiselect from 'vue-multiselect';
+    import Datepicker from 'vuejs-datepicker';
+
+
   export default {
+    components: {
+      Multiselect,
+      Datepicker
+    },
     data(){
       return {
+        format: 'MM/dd/yyyy',
+        options: [
+          { code: 1, name: 'Alabama' },
+          { code: 2, name: 'Wyoming' },
+          { code: 3, name: 'Coming' },
+          { code: 4, name: 'Hanry Die' },
+          { code: 5, name: 'John Doe' }
+        ],
+        limitMultiValue:[],
+     
       };
     },
     computed: {
@@ -269,9 +231,19 @@
       })
     },
     methods:{
+      addTag (newTag) {
+        const tag = {
+          name: newTag,
+          code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        };
+        this.options.push(tag);
+        this.value.push(tag);
+      },
       getImgUrl(path) {
         return require('@/assets/images/'+path);
       },
     }
   };
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+

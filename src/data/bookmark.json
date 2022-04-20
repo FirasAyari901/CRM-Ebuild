@@ -4,8 +4,8 @@
             "id": 1,
             "fillstar": false,
             "image": "lightgallry/01.jpg",
-            "title": "Admin Template",
-            "website_url": "http://admin.pixelstrap.com/Xolo/ltr/landing-page.html",
+            "name": "Foulen fouleni",
+            "role": "frontend developer",
             "desc": "Xolo is beautifully crafted, clean and modern designed admin theme with 6 different demos and light - dark versions.",
             "collection": "General"
         },
@@ -13,8 +13,8 @@
             "id": 2,
             "fillstar": true,
             "image": "lightgallry/02.jpg",
-            "title": "Universal Template",
-            "website_url": "https://angular.pixelstrap.com/universal/landing",
+            "name": "Foulen fouleni",
+            "role": "frontend developer",
             "desc": "Universal is beautifully crafted, clean and modern designed admin theme",
             "collection": "General"
         },
@@ -22,8 +22,8 @@
             "id": 3,
             "fillstar": false,
             "image": "lightgallry/03.jpg",
-            "title": "Angular Theme",
-            "website_url": "https://angular.pixelstrap.com/Xolo/landing",
+            "name": "Foulen fouleni",
+            "role": "backend developer",
             "desc": "Xolo is beautifully crafted, clean and modern designed admin theme",
             "collection": "Fs"
         },
@@ -31,8 +31,8 @@
             "id": 4,
             "fillstar": false,
             "image": "lightgallry/04.jpg",
-            "title": "Multikart Admin",
-            "website_url": "http://themes.pixelstrap.com/multikart/back-end/index.html",
+            "name": "Foulen fouleni",
+            "role": "backend developer",
             "desc": "Multikart Admin is modern designed admin theme",
             "collection": "General"
         },
@@ -40,8 +40,8 @@
             "id": 5,
             "fillstar": false,
             "image": "lightgallry/05.jpg",
-            "title": "Ecommerece theme",
-            "website_url": "http://themes.pixelstrap.com/multikart",
+            "name": "Foulen fouleni",
+            "role": "designer",
             "desc": "Multikart HTML template is an apparently simple but highly functional tempalate designed for creating a flourisahing online business.",
             "collection": "General"
         },
@@ -49,8 +49,8 @@
             "id": 6,
             "fillstar": false,
             "image": "lightgallry/06.jpg",
-            "title": "Tovo app landing page",
-            "website_url": "http://vue.pixelstrap.com/tovo/home-one",
+            "name": "Foulen fouleni",
+            "role": "marketing",
             "desc": "Amazing Landing Page With Easy Customization",
             "collection": "Fs"
         }

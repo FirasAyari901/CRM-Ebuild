@@ -18,21 +18,15 @@
               <a class="logo text-left">
                 <img
                   class="img-fluid for-light"
-                  src="../../assets/images/logo/login.png"
-                  alt="looginpage" />
-                <img
-                  class="img-fluid for-dark"
-                  src="../../assets/images/logo/logo_dark.png"
+                  src="../../assets/images/logo/logoebuild.png"
                   alt="looginpage"
-              /></a>
+                  width="150"
+                   />
+                </a>
             </div>
-            <div class="login-main">
-              <b-card no-body>
-                <b-tabs pills vertical>
-                  <b-tab active>
+            <div class="login-main container ">
              
-                    <b-card-text>
-                      <form class="theme-form">
+              <form style="padding : 30px;" class="container theme-form">
                         <h4>Sign in to account</h4>
                         <p>Enter your email & password to login</p>
                        
@@ -96,11 +90,11 @@
                         </div>
           
                       </form>
-                    </b-card-text>
-                  </b-tab>
                  
-                </b-tabs>
-              </b-card>
+             
+                  
+                  
+               
             </div>
           </div>
         </div>
