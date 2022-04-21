@@ -13,56 +13,6 @@
       "icon": "users",
       "type": "link",
       "bookmark": true
-    },
-    {
-      "path": "/app/teams",
-      "title": "Teams",
-      "icon": "user-check",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/projects",
-      "title": "projects",
-      "icon": "airplay",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/operations",
-      "title": "operations",
-      "icon": "dollar-sign",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/tickets",
-      "title": "tickets",
-      "icon": "clipboard",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/documents",
-      "title": "documents",
-      "icon": "file-text",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/substasks",
-      "title": "substasks",
-      "icon": "server",
-      "type": "link",
-      "bookmark": true
-    },
-    
-    {
-      "path": "/form/form",
-      "title": "Form",
-      "icon": "mail",
-      "type": "link",
-      "bookmark": true
     }
     
     
