@@ -1,11 +1,7 @@
 <template>
   <div id="app">
   <!-- Loader starts-->
-    <div class="loader-wrapper" :class="{'loderhide' : !show }">
-      <div class="loader-index">
-        <span></span>
-      </div>
-    </div>
+    
   <!-- Loader ends-->
 
     <!--<Main/>-->

@@ -3,8 +3,8 @@ import Router from 'vue-router';
 import Body from '../components/body';
 
 
-import Stuff from '../pages/tables/bootstrap/stuff';
-import Clients from '../pages/tables/bootstrap/clients';
+import Staff from '../pages/personnels/staff';
+import Clients from '../pages/personnels/clients';
 import FormWizrd from '../pages/forms/form_wizard';
 
 
@@ -13,9 +13,11 @@ import FormWizrd from '../pages/forms/form_wizard';
 import LoginValidate from '../pages/authentication/login_with_validation';
 import ResetPassword from '../pages/authentication/reset_password';
 import projectlist from '../pages/project/project-list';
-import Bookmark from '../pages/bookmark';
-import Creative from '../pages/cards/creative';
-import OrderHistory from '../pages/ecommerce/order_history';
+import project from '../pages/project/project';
+import Teams from '../pages/teams/teams';
+import Task from '../pages/tasks/task';
+import Subtask from '../pages/subtask/subtask';
+import Operations from '../pages/operations/operations';
 import Tickets from '../pages/tickets';
 import Documents from '../pages/document';
 
@@ -34,9 +36,9 @@ const routes = [
   children: [
 
   {
-    path: 'stuff',
+    path: 'staff',
     name: 'FilterTable',
-    component: Stuff,
+    component: Staff,
      
   },
   {
@@ -52,21 +54,33 @@ const routes = [
   
   },
   {
+    path: 'project',
+    name: 'FilterTable',
+    component: project,
+  
+  },
+  {
     path: 'teams',
     name: 'FilterTable',
-    component: Bookmark,
+    component: Teams,
   
   },
   {
     path: 'operations',
     name: 'FilterTable',
-    component: OrderHistory,
+    component: Operations,
   
   },
   {
-    path: 'substasks',
+    path: 'Task',
     name: 'FilterTable',
-    component: Creative,
+    component: Task,
+  
+  },
+  {
+    path: 'subtask',
+    name: 'FilterTable',
+    component: Subtask,
   
   },
   {

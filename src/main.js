@@ -104,9 +104,7 @@ const i18n = new VueI18n({
 });
 
 Vue.config.productionTip = false;
-firebase.initializeApp(config.firebase);
 
-export const db = firebase.firestore();
 
 new Vue({
   i18n,

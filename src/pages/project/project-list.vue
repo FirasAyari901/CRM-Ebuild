@@ -14,11 +14,10 @@
                     </template>
                     <b-card-text>
                       <div class="col-sm-12 p-0">
-                        <div class="card">
-                          <div class="card-body">
+  
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in allprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
-                                <div class="project-box">
+                                <div class="project-box" @click="redirect(index)">
                                  
                               
                                   <span class="badge" :class="'badge-'+project.type">
@@ -48,8 +47,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                   
                     </b-card-text>
                   </b-tab>
                   <b-tab>
@@ -58,8 +56,7 @@
                     </template>  
                     <b-card-text>
                       <div class="col-sm-12 p-0">
-                        <div class="card">
-                          <div class="card-body">
+  
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in doingprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box">
@@ -89,8 +86,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                    
                     </b-card-text>
                   </b-tab>
                   <b-tab>
@@ -99,8 +95,7 @@
                     </template> 
                     <b-card-text>
                       <div class="col-sm-12 p-0">
-                        <div class="card">
-                          <div class="card-body">
+  
                             <div class="row">
                               <div class="col-xl-4 col-lg-6" v-for="(project,index) in doneprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box">
@@ -131,8 +126,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                    
                     </b-card-text>
                   </b-tab>
                 </b-tabs>
@@ -238,6 +232,9 @@
         };
         this.options.push(tag);
         this.value.push(tag);
+      },
+      redirect (index) {
+        this.$router.push({path:'/app/project',query:{ id: index }});  
       },
       getImgUrl(path) {
         return require('@/assets/images/'+path);

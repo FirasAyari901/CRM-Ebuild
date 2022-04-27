@@ -52,7 +52,7 @@
           id="example-input-7"
           name="example-input-7"
           v-model="form.num_tel"
-          v-validate="{ required: true,numeric, min:8,max:8  }"
+          v-validate="{ required: true, min:8,max:8  }"
           :state="validateState('example-input-7')"
           aria-describedby="input-7-live-feedback"
           data-vv-as="num_tel"
@@ -66,7 +66,7 @@
           id="example-input-4"
           name="example-input-4"
           v-model="form.email"
-          v-validate="{ required: true,email  }"
+          v-validate="{ required: true  }"
           :state="validateState('example-input-4')"
           aria-describedby="input-4-live-feedback"
           data-vv-as="email"
@@ -81,12 +81,13 @@
         <b-form-file
           id="example-input-5"
           name="example-input-5"
-          
+          multiple 
           v-model="form.logo"
           v-validate="{ required: true}"
           :state="validateState('example-input-5')"
           aria-describedby="input-5-live-feedback"
           data-vv-as="logo"
+          @change="onFIleSelected"
         ></b-form-file>
 
         <b-form-invalid-feedback id="input-5-live-feedback">{{ veeErrors.first('example-input-5') }}</b-form-invalid-feedback>
@@ -185,6 +186,7 @@
 </template>
 
 <script>
+   import axios from 'axios';  
 
   export default {
     data(){
@@ -200,11 +202,9 @@
         email:'',
         password:'',
         name: '',
-    
         raison_sociale:null,
-       
-       
       },
+      selectedFile:null,
         tablefields: [
           { key: 'name', label: 'name', sortable: true, },
           { key: 'position', label: 'email', sortable: true, },
@@ -264,15 +264,30 @@
         this.$validator.reset();
       });
     },
-    onSubmit() {
+      onFIleSelected(event) {
+        
+        let reader = new FileReader();
+
+      reader.onload = (event) => {
+        this.selectedFile = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      console.log(this.selectedFile)
+
+    },
+
+     onSubmit(event) {
       this.$validator.validateAll().then(result => {
         if (!result) {
           
           this.$toastr.i('correct the errors') ;
           return;
         }
-
-        alert("Form submitted!");
+        this.form.logo = this.selectedFile
+        console.log(this.form)
+        axios.post('test',this.form).then((res)=>{
+          console.log(res.data)
+        })
         return;
       });
     }
@@ -288,3 +303,5 @@
   fill: none;
 }
 </style>
+
+

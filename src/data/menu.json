@@ -8,8 +8,8 @@
       "bookmark": true
     },
     {
-      "path": "/app/stuff",
-      "title": "Stuff",
+      "path": "/app/staff",
+      "title": "Staff",
       "icon": "users",
       "type": "link",
       "bookmark": true

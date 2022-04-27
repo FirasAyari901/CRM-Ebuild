@@ -157,7 +157,7 @@
               localStorage.setItem('personnel',JSON.stringify(response.data.personnel))
         
             }
-            this.$router.push('/table/stuff');  
+            this.$router.push('/app/customers');  
             this.$toastr.s('welcome '+response.data.personnel.name);
           
           }

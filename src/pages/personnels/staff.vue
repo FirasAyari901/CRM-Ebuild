@@ -16,11 +16,11 @@
                       <b-row>
                         <b-col xl="6">
                          
-                        <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add stuff</b-button>
+                        <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add staff</b-button>
                         <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                              <div class="card">
                         <div class="card-header">
-                            <h5>Add stuff</h5>
+                            <h5>Add staff</h5>
                         </div>
                 
                           <div>
@@ -265,20 +265,12 @@
   },*/
    
     created() {
-      
       axios.get('personnels').then((response)=>{
         this.items=response.data.staff
-      })
-      //console.log(response)
-      // eslint-disable-next-line no-empty
+      })   
      console.log(this.items)
-    
-    
-
-     
-      // Set the initial number of items
       this.totalRows = this.items.length;
-      
+
     },
     methods: {
       onFiltered(filteredItems) {
