@@ -67,15 +67,17 @@ class EquipeController extends Controller
             ]);
         }
         else{
+            $member = "No members added yet !";
+            $members = array();
+            foreach($equipe->personnels as $personnel) {
+                $member = new PersonnelResource($personnel);
+                $members [] = $member;
+            }
             return response()->json([
                 'status' => 200,
-                'equipe' => new EquipeResource($equipe)
+                'equipe' => new EquipeResource($equipe),
+                'members' => $member
             ]);
-            foreach($equipe->personnels as $personnel) {
-                return response()->json([
-                    'personnel' => new PersonnelResource($personnel)
-                ]);
-            }
         }
     }
     /**
@@ -86,7 +88,7 @@ class EquipeController extends Controller
      */
     public function edit(Equipe $equipe)
     {
-        //
+        
     }
 
     /**
@@ -98,14 +100,14 @@ class EquipeController extends Controller
      */
     public function update(EquipeRequest $request, Equipe $equipe)
     {
-        if(!$personnel) {
+        if(!$equipe) {
             return response()->json([
                 'status' => 401,
                 'message' => 'The team data does not exist'
             ]);
         }
         else {
-            $personnel->update([
+            $equipe->update([
                 'pseudo' => $request->input('pseudo'),
             ]);
 

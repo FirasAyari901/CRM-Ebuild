@@ -40,6 +40,23 @@ class Personnel extends Authenticatable
 
     public function equipes()
     {
-        return $this->belongsToMany('App\Models\Equipe');
+        return $this->belongsToMany(Equipe::class);
+    }
+    public function reponses()
+    {
+        return $this->hasMany(Reponse::class);
+    }
+    public function tasks()
+    {
+        return $this->hasMany(Tache::class);
+    }
+    public function subtasks()
+    {
+        return $this->hasMany(SousTache::class);
+        
+    }
+    public function comments()
+    {
+        return $this->hasMany(Commentaire::class);
     }
 }

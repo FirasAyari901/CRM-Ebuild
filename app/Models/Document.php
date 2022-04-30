@@ -5,26 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Equipe extends Model
+class Document extends Model
 {
     use HasFactory;
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'pseudo',
+        'info_supp',
+        'type_doc',
+        'montant_ttc',
+        'montant_ht',
+        'etat_doc'
     ];
-
-    public function personnels()
-    {
-        return $this->belongsToMany(Personnel::class);
-    }
-
-    public function projects()
-    {
-        return $this->hasMany(Projet::class);
-    }
-
 }
