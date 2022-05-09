@@ -68,7 +68,7 @@
     methods:{
       
       redirect () {
-        this.$router.push({path:'/app/task'});  
+        this.$router.push({ path:'/app/task' });  
       },
       
     }

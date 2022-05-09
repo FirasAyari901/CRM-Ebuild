@@ -156,7 +156,7 @@
       })
     },
     methods:{
-       addTag (newTag) {
+      addTag (newTag) {
         const tag = {
           name: newTag,
           code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))

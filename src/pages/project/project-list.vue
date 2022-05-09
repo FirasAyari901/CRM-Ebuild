@@ -195,7 +195,7 @@
 <script>
   import { mapState } from 'vuex';
   import Multiselect from 'vue-multiselect';
-    import Datepicker from 'vuejs-datepicker';
+  import Datepicker from 'vuejs-datepicker';
 
 
   export default {
@@ -234,7 +234,7 @@
         this.value.push(tag);
       },
       redirect (index) {
-        this.$router.push({path:'/app/project',query:{ id: index }});  
+        this.$router.push({ path:'/app/project',query:{ id: index } });  
       },
       getImgUrl(path) {
         return require('@/assets/images/'+path);

@@ -31,7 +31,7 @@ class Auth extends EventEmitter {
     }
 
     Logout() {
-        sessionStorage.clear()
+        sessionStorage.clear();
     }
 
     isAuthenticated() {

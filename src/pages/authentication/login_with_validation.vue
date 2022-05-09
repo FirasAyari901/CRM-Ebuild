@@ -143,34 +143,33 @@
       signUp: async  function () {
         this.submitted = true;
         if (this.password !=''  && this.email != '') {
-          const data = {password: this.password,  email: this.email,};
-          console.log(data)
+          const data = { password: this.password,  email: this.email, };
+          console.log(data);
           const response = await axios.post('login',data);
-          
+          console.log(response.data);
           if (response.data.status == 200){
-          localStorage.setItem('token',response.data.token)
+            localStorage.setItem('token',response.data.token);
             if(response.data.client){
-              localStorage.setItem('client',JSON.stringify(response.data.client))
+              localStorage.setItem('client',JSON.stringify(response.data.client));
             }
             if(response.data.personnel){
-            localStorage.setItem('role',response.data.personnel.attributes.role)
-              localStorage.setItem('personnel',JSON.stringify(response.data.personnel))
+              localStorage.setItem('role',response.data.personnel.role);
+              localStorage.setItem('personnel',JSON.stringify(response.data.personnel));
         
             }
             this.$router.push('/app/customers');  
             this.$toastr.s('welcome '+response.data.personnel.name);
           
-          }
-          else{if (response.data.status==401) {
-            this.$toastr.e(''+response.data.message);
-            localStorage.clear()
-            this.$router.go()
+          } else{
+            if (response.data.status==401) {
+              this.$toastr.e(''+response.data.message);
+              localStorage.clear();
+              this.$router.go();
             
-          }}
+            }
+          }
               
-        }
-       
-        else this.submitted = false;
+        } else this.submitted = false;
        
 
       },
