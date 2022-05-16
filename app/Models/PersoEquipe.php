@@ -8,6 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class PersoEquipe extends Model
 {
     use HasFactory;
-
-    
 }

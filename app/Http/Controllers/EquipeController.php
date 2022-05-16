@@ -66,20 +66,18 @@ class EquipeController extends Controller
                 'message' => 'The team data does not exist'
             ]);
         }
-        else{
-            $member = "No members added yet !";
-            $members = array();
-            foreach($equipe->personnels as $personnel) {
-                $member = new PersonnelResource($personnel);
-                $members [] = $member;
-            }
-            return response()->json([
-                'status' => 200,
-                'equipe' => new EquipeResource($equipe),
-                'members' => $member
-            ]);
+        $members = array();
+        foreach($equipe->personnels as $personnel) {
+            $member = new PersonnelResource($personnel);
+            $members [] = $member;
         }
+        return response()->json([
+            'status' => 200,
+            'equipe' => new EquipeResource($equipe),
+            'members' => $members
+        ]);
     }
+
     /**
      * Show the form for editing the specified resource.
      *

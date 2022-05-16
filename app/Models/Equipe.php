@@ -14,7 +14,7 @@ class Equipe extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'pseudo',
+        'pseudo'
     ];
 
     public function personnels()

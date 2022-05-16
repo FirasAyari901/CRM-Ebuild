@@ -19,11 +19,9 @@ class ClientResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'num_tel' => $this->num_tel,
-            'attributes' => [
-                'Social Reason' => $this->raison_sociale,
-                'logo' => $this->logo,
-                'status' => $this->etat
-            ] 
+            'raison_sociale' => $this->raison_sociale,
+            'logo' => $this->logo,
+            'status' => $this->etat
         ];
     }
 }

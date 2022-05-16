@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('client_id')->unsigned();
+            $table->bigInteger('client_id')->unsigned();  
             $table->string('titre');
             $table->text('description');
             $table->binary('file')->nullable();
             $table->string('etat')->default('created');
             $table->timestamps();
-
             $table->foreign('client_id')
                 ->references('id')
                 ->on('clients')

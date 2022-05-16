@@ -34,7 +34,7 @@ class PersoEquipeController extends Controller
         return response()->json([
             'status' => 200,
             'equipe' => new EquipeResource($equipe),
-            'members' => $member
+            'members' => $members
         ]);
     }
 
@@ -60,7 +60,7 @@ class PersoEquipeController extends Controller
         return response()->json([
             'status' => 200,
             'equipe' => new EquipeResource($equipe),
-            'members' => $member
+            'members' => $members
         ]);
     }
 

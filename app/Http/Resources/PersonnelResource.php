@@ -19,11 +19,9 @@ class PersonnelResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'num_tel' => $this->num_tel,
-            'attributes' => [
-                'role' => $this->role,
-                'CV' => $this->CV,
-                'image' => $this->image
-            ] 
+            'role' => $this->role,
+            'CV' => $this->CV,
+            'image' => $this->image 
         ];
     }
 }
