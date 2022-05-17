@@ -8,7 +8,14 @@
                 <div class="card">
                    
                     <div class="card-body">
-                      <h2>Project name</h2>
+
+                      <div class="row">
+                        <div class="col-10"><h2>Project name</h2></div>
+                        <div class="col-2">
+                          <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add task</b-button>
+                        </div>
+                      </div>
+
                       <span class="badge badge-primary" >Doing</span>
                       <br>
                       <div class="avaiabilty">
@@ -65,10 +72,30 @@
 
 <script>
   export default {
+    props: ['id'],
     methods:{
-      
+      validateState(ref) {
+      if (
+        this.veeFields[ref] &&
+        (this.veeFields[ref].dirty || this.veeFields[ref].validated)
+      ) {
+        return !this.veeErrors.has(ref);
+      }
+      return null;
+    },
+    resetForm() {
+      this.form = {
+        name: null,
+        food: null
+      };
+
+      this.$nextTick(() => {
+        this.$validator.reset();
+      });
+    },
       redirect () {
-        this.$router.push({ path:'/app/task' });  
+        this.$router.push({path:'/app/task/1'});
+
       },
       
     }
