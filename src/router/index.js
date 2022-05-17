@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Body from '../components/body';
 
 
+
 import Staff from '../pages/personnels/staff';
 import Clients from '../pages/personnels/clients';
 import FormWizrd from '../pages/forms/form_wizard';
@@ -54,9 +55,11 @@ const routes = [
   
   },
   {
-    path: 'project',
+    path: 'project/:id',
     name: 'FilterTable',
     component: project,
+    props: true
+
   
   },
   {
@@ -72,15 +75,17 @@ const routes = [
   
   },
   {
-    path: 'Task',
+    path: 'Task/:id',
     name: 'FilterTable',
     component: Task,
+    props: true
   
   },
   {
-    path: 'subtask',
+    path: 'subtask/:id',
     name: 'FilterTable',
     component: Subtask,
+    props: true
   
   },
   {
