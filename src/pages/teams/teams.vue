@@ -19,16 +19,16 @@
                                             Add Team
                                         </template>
                                       <div class="modal-body">
-                                      <form class="form-bookmark needs-validation" id="bookmark-form" novalidate="">
+                                      <form class="form-bookmark needs-validation" id="bookmark-form" novalidate="" @submit.stop.prevent="addTeam">
                                         <div class="form-row">
                                           <div class="form-group col-md-12">
-                                            <label for="bm-weburl">nickname</label>
-                                            <input class="form-control" id="bm-weburl" type="text" required="" autocomplete="off">
+                                            <label for="addpseudo">Pseudo</label>
+                                            <input class="form-control" id="addpseudo" type="text" required="" autocomplete="off">
                                           </div>
                                           <div class="mb-2">
-                                            <div class="col-form-label">Select stuff </div>
-                                            <multiselect   v-model="limitMultiValue" 
-                                              label="name"  track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                                            <div class="col-form-label">Default Placeholder</div>
+                                            <multiselect  v-model="multiValue" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" 
+                                              label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
                                           </div>
                                         </div>
                                         <b-button class="btn "  onclick="submitBookMark()" type="submit" variant="secondary">Add</b-button>
@@ -39,12 +39,11 @@
                              <br><br>
                             </li>
                             <li class="nav-item"><span class="main-title"> Teams</span></li>
-                            <li><a  class="show " id="pills-favourites-tab" data-toggle="pill" href="javascript:void(0)" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title" v-on:click="say('pills_favourites')"> Team 1 ({{ favourite.length }})</span></a></li>
-                            <li><a  class="show " id="pills-favourites-tab" data-toggle="pill" href="javascript:void(0)" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title" v-on:click="say('pills_favourites')"> Team 2 ({{ favourite.length }})</span></a></li>
-                            <li><a  class="show " id="pills-favourites-tab" data-toggle="pill" href="javascript:void(0)" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title" v-on:click="say('pills_favourites')"> Team 3 ({{ favourite.length }})</span></a></li>
-                            <li><a  class="show " id="pills-favourites-tab" data-toggle="pill" href="javascript:void(0)" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title" v-on:click="say('pills_favourites')"> Team 4 ({{ favourite.length }})</span></a></li>
-
-                            </ul>
+                          </ul><br>
+                          <ul :key="item.id" v-for="item in items">
+                           <li><a  class="show " id="item1" data-toggle="pill" href="javascript:void(0)" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title" v-on:click="say(item.id)">{{ item.pseudo }}</span></a></li> <br>  
+                          
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -55,10 +54,10 @@
                     <div class="card email-body radius-left">
                       <div class="pl-0">
                         <div class="tab-content">
-                          <div class="tab-pane fade" v-bind:class="(activeclass==='pills_created') ? 'active show': ''" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+                          <div class="tab-pane fade active show" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
                             <div class="card mb-0">
                               <div class="card-header d-flex">
-                                <h6 class="mb-0">Team i</h6>
+                                <h6 class="mb-0">{{team.pseudo}}</h6>
                                 <ul>
                                   <li><a href="#" @click="$bvModal.show('bv-modal-edit')"><feather type="edit" stroke="#ffcd01" ></feather></a></li>    
                                   <li><a href="#"><feather type="trash-2" stroke="red" ></feather></a></li>
@@ -68,16 +67,15 @@
                                             Update Team
                                         </template>
                                       <div class="modal-body">
-                                      <form class="form-bookmark needs-validation" id="bookmark-form" novalidate="">
+                                      <form class="form-bookmark needs-validation" id="bookmark-form" novalidate="" @submit.stop.prevent="updateTeam">
                                         <div class="form-row">
                                           <div class="form-group col-md-12">
-                                            <label for="bm-weburl">nickname</label>
-                                            <input class="form-control" id="bm-weburl" type="text" required="" autocomplete="off">
+                                            <label for="pseudo">Pseudo</label>
+                                            <input class="form-control" id="pseudo" type="text" required="" autocomplete="off">
                                           </div>
-                                          <div class="mb-2">
+                                          <div class="form-group col-md-12">
                                             <div class="col-form-label">Select stuff </div>
-                                            <multiselect   v-model="limitMultiValue" 
-                                              label="name"  track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                                            <multiselect  v-model="singleValue" :options="options" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a value"></multiselect>
                                           </div>
                                         </div>
                                         <b-button class="btn "  onclick="submitBookMark()" type="submit" variant="secondary">Update </b-button>
@@ -88,10 +86,10 @@
                               <div class="card-body pb-0">
                                 <div class="details-bookmark text-center" v-bind:class="{ 'list-bookmark' : liststyle}">
                                   <div class="row" id="bookmarkData">
-                                    <div class="col-xl-3 col-md-4 xl-50" v-for="(item,index) in bookmark" :key="index">
+                                    <div class="col-xl-3 col-md-4 xl-50" v-for="(item,index) in members" :key="index">
                                       <div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
-                                          <img class="img-fluid" :src='getImgUrl(item.image)' alt="">
+                                          <img class="img-fluid" :src='item.image' alt="">
                                           <div class="desciption-data">
                                             <div class="title-bookmark">
                                               <h6 class="title_0">{{ item.name }}</h6>
@@ -126,8 +124,8 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import Multiselect from 'vue-multiselect';
+ import axios from 'axios'; 
 
   export default {
     name:'bookmark',
@@ -138,7 +136,6 @@
       return {
         liststyle: false,
         data : [],
-        activeclass : 'pills_created',
         favourite : [],
         options: [
           { code: 1, name: 'Alabama' },
@@ -147,16 +144,31 @@
           { code: 4, name: 'Hanry Die' },
           { code: 5, name: 'John Doe' }
         ],
-        limitMultiValue:[],
+        singleValue:'',
+        multiValue:[],
+        items:[],
+        members:[],
+        team :{}
       };
     },
-    computed: {
-      ...mapState({
-        bookmark: state => state.common.bookmark,
-      })
+ 
+   created() {
+      this.init()
     },
     methods:{
-      addTag (newTag) {
+
+      init(){
+        axios.get('equipes').then((response)=>{
+        this.items=response.data.Equipes
+      })
+      
+      axios.get('staff').then((response)=>{
+        this.options=response.data.staff
+      })
+      
+      },
+       addTag (newTag) {
+
         const tag = {
           name: newTag,
           code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
@@ -164,28 +176,28 @@
         this.options.push(tag);
         this.value.push(tag);
       },
-      getImgUrl(path) {
-        return require('@/assets/images/'+path);
-      },
+
       say: function (message) {
-        this.activeclass = message;
+ 
+          axios.get('equipes/'+String(message)).then((response)=>{
+        this.team=response.data.equipe 
+        this.members=response.data.members
+      })
+ 
       },
-      setFavourite(item) {
-        let objIndex = this.favourite.findIndex((obj => obj.id === item.id));
-        if (objIndex > -1) {
-          this.favourite.splice(objIndex, 1);
-        } else {
-          this.favourite.push(item);
-        }
+      updateTeam(){
+       const pseudo = document.getElementById("pseudo").value
+       console.log(pseudo)
+       console.log(this.singleValue)
       },
-      getActive(itemId) {
-        let objIndex = this.favourite.findIndex((obj => obj.id === itemId));
-        if (objIndex > -1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
+      addTeam(){
+       const addpseudo = document.getElementById("addpseudo").value
+       console.log(addpseudo)
+       const ids = this.multiValue.map(x => x.id);
+       console.log(ids)
+      },
+     
+
     }
   };
 </script>
