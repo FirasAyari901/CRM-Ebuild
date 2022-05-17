@@ -8,7 +8,14 @@
                 <div class="card">
                    
                     <div class="card-body">
-                      <h2>Task name</h2>
+                      <div class="row">
+                        <div class="col-10"><h2>Task name</h2></div>
+                        <div class="col-2">
+                          <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add subtask</b-button>
+                        </div>
+                      </div>
+                      
+
                       <span class="badge badge-primary" >Doing</span>
                       <br>
                       <div class="avaiabilty">
@@ -77,10 +84,13 @@
 
 <script>
   export default {
+
+    props: ['id'],
     methods:{
       
       redirect () {
-        this.$router.push({ path:'/app/subtask' });  
+        this.$router.push({path:'/app/subtask/1'});  
+
       },
       
     }
