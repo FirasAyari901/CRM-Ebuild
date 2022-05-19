@@ -2,14 +2,9 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xl-7 order-1 b-center bg-size" :style="{ backgroundImage: 'url('+ require('../../assets/images/login/1.jpg') +')' }"
-          style="background-size: cover; background-position: center center; display: block;">
-        <img
-          class="bg-img-cover bg-center"
-          src="../../assets/images/login/1.jpg"
-          alt="looginpage"
-          style="display: none;"
-        />
+      <div class="col-xl-7 order-1 b-center bg-size" :style="{ backgroundImage: 'url('+ require('../../assets/images/logo/login-image.png') +')' }"
+          style="background-size: 60vw 80vh;background-repeat: no-repeat; background-position: center center; display: block;">
+
       </div>
       <div class="col-xl-5 p-0">
         <div class="login-card">

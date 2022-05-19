@@ -3,11 +3,12 @@
     <div class="media profile-media">
       <img
         class="b-r-10"
-        src="../../assets/images/dashboard/profile.jpg"
+        src="../../assets/images/logo/favicon.png"
         alt=""
+        width="30"
       />
       <div class="media-body">
-        <span>Emay Walter</span>
+        <span>Admin E-build</span>
         <p class="mb-0 font-roboto">
           Admin <i class="middle fa fa-angle-down"></i>
         </p>
@@ -40,7 +41,6 @@
 <script>
   import firebase from 'firebase';
   import UserAuth from '../../auth/js/index';
-  import login_with_validationVue from '../../pages/authentication/login_with_validation.vue';
   export default {
     name: 'Profile',
     methods: {

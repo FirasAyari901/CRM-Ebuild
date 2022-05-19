@@ -17,7 +17,10 @@ import projectlist from '../pages/project/project-list';
 import project from '../pages/project/project';
 import Teams from '../pages/teams/teams';
 import Task from '../pages/tasks/task';
+
+import Tasks from '../pages/tasks/tasks';
 import Subtask from '../pages/subtask/subtask';
+import Subtasks from '../pages/subtask/subtasks';
 import Operations from '../pages/operations/operations';
 import Tickets from '../pages/tickets';
 import Documents from '../pages/document';
@@ -82,9 +85,23 @@ const routes = [
   
   },
   {
+    path: 'Tasks',
+    name: 'FilterTable',
+    component: Tasks,
+    props: true
+  
+  },
+  {
     path: 'subtask/:id',
     name: 'FilterTable',
     component: Subtask,
+    props: true
+  
+  },
+  {
+    path: 'subtasks',
+    name: 'FilterTable',
+    component: Subtasks,
     props: true
   
   },

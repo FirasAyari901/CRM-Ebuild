@@ -12,7 +12,7 @@
               <b-row>
                 <b-col xl="6">         
                   <b-button  id="default-secondary" lass="mb-0 datatable-select" v-b-modal.add variant="secondary">Add staff</b-button>
-                  <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'secondary' cancelVariant= 'seacndary' id="add" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
+                  <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'primaryy' cancelVariant= 'seacndarfy' id="add" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                     <div class="card">
                       <div class="card-header">
                         <h5>Add staff</h5>
@@ -112,7 +112,7 @@
                       </div>                       
                     </div>
                   </b-modal>
-                  <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="update_modal" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
+                  <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndarty' id="update_modal" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                     <div class="card">
                       <div class="card-header">
                         <h5>Update staff</h5>
@@ -377,6 +377,7 @@
         });
       },
       add() {
+        console.log(this.form);
         this.$validator.validateAll().then(result => {
           if (!result) {
             this.$toastr.i('correct the errors'); 

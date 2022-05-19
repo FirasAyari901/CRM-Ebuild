@@ -5,55 +5,36 @@
         <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
-                <div class="card">
-                   
-                    <div class="card-body">
-
-                      <div class="row">
-                        <div class="col-10"><h2>{{project.project_name}}</h2></div>
-                        <div class="col-2">
-                          <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add task</b-button>
-                        </div>
-                      </div>
-
-                      <span class="badge badge-primary" >{{project.attributes.etat}}</span>
-                      <br>
-                      <div class="avaiabilty">
-                          <div class="text-success">start date : {{project.attributes.date_debut}}</div>
-                      </div>
-                      <div class="avaiabilty">
-                          <div class="text-success">Deadline : {{project.attributes.deadline}}</div>
-                      </div>
-                      <br>
-                      <p>{{project.attributes.description}}</p> 
-                    </div>
-                </div>
                 <div class="col-sm-12 p-0">
                         
-                            <div class="row" >
-                              <div class="col-sm-12 col-xl-6" v-for="(task,index) in tasks" :key="index">
-                                <b-card header-tag="div" header-class="b-l-primary border-3" >
-                                  <h5 @click="redirect(task.id)" slot="header">{{task.titre}}</h5>
-                                  <span class="badge badge-primary" >{{task.attributes.etat}}</span><br>
+                            <div class="row">
+                              <div class="col-sm-12 col-xl-6" v-for="(subtask,index) in subtasks" :key="index">
+                                <b-card header-tag="div" header-bg-variant="secondary" class="card-absolute" >
+                                  
+                                    <h5 slot="header">{{ subtask.attributes.etat }}</h5>
+                                  <div @click="redirect(subtask.id)">
+                                    <h4>{{ subtask.titre }}</h4>    
+                              <br>
+                                   
                                   <div class="avaiabilty">
-                                      <div class="text-success">Deadline : {{task.attributes.deadline}}</div>
+                                      <div class="text-success">Deadline : {{ subtask.attributes.deadline }}</div>
                                   </div>
                                   <br>
-                                  <b-card-text class="mb-0">{{task.attributes.description}}</b-card-text><br><br>
+                                  <b-card-text class="mb-0">{{ subtask.attributes.description }}</b-card-text>
+                                  </div>
                                   <feather   type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                <feather @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                <feather @click="deleteee(subtask.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                
                                 </b-card>
-
                               </div>
-                        
-
+                          
                             </div>
                         </div>
                       
               </div>               
             </div>
         </div>
-           <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
+        <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                              <div class="card">
                         <div class="card-header">
                             <h5>Add task</h5>
@@ -105,7 +86,7 @@
                             </b-form>
                           </div>
                           </div>
-            </b-modal>
+        </b-modal>
         <!-- Container-fluid Ends-->
     </div>
 </template>
@@ -115,7 +96,6 @@
  import axios from 'axios'; 
 
   export default {
-    props: ['id'],
     components: {
       Multiselect,
     },
@@ -126,7 +106,7 @@
         etat:'',
         description: '',
         titre: '',
-        projet_id:parseInt(this.id, 10),
+        tache_id:parseInt(this.id, 10),
         personnel_id:2
        
        
@@ -139,15 +119,12 @@
           { code: 5, name: 'Closed' }
         ],
         limitMultiValue:[],
-       project :null,
-       tasks :null
+       subtasks :null
 
       }},
     created() {
-      axios.get('projets/'+String(this.id)).then(res =>{
-             this.project = res.data.projet
-             this.tasks = res.data.taches
-             console.log(res.data.taches);
+      axios.get('soustaches').then(res =>{
+             this.subtasks = res.data.soustaches
           });
     },
     methods:{
@@ -158,7 +135,7 @@
             this.$toastr.i('correct the errors'); 
             return;
           }
-          axios.post('taches',this.form).then(res =>{
+          axios.post('soustaches',this.form).then(res =>{
             if (res.data.status == 200){
               this.$toastr.s('Task added ');
               setTimeout(() => {
@@ -173,7 +150,7 @@
 
     },
     deleteee(id) {
- axios.delete('taches/'+id).then(res =>{
+ axios.delete('soustaches/'+id).then(res =>{
               this.$toastr.s('project deleted ! ');
               setTimeout(() => {
                 location.reload();
@@ -203,7 +180,7 @@
       });
     },
       redirect (id) {
-        this.$router.push({path:'/app/task/'+id});
+        this.$router.push({path:'/app/subtask/'+id});
 
       },
       

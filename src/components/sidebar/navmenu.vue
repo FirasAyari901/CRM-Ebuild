@@ -17,26 +17,27 @@
                 ><i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
               </div>
             </li>
-           <li
+           <li  
                 v-for="(menuItem, index) in menuItems"
                 :key="index"
                 :class="{'active': menuItem.active, 'sidebar-main-title' : menuItem.type == 'headtitle'}"
                 class="sidebar-list"
+                
               >
                 <!-- link title -->
-                <div v-if="menuItem.type == 'headtitle'">
+                <div v-if="menuItem.type == 'headtitle' && menuItem.role.includes(role)">
                   <h6 class="lan-1">{{ $t(menuItem.headTitle1) }}</h6>
                   <p class="lan-2">{{ $t(menuItem.headTitle2) }}</p>
                 </div>
                 <!-- Sub -->
                 <label
-                      :class="'badge badge-'+menuItem.badgeType"
-                      v-if="menuItem.badgeType"
+                      :class="'badge badge-'+menuItem.badgeType "
+                      v-if="menuItem.badgeType && menuItem.role.includes(role)"
                     >{{ $t(menuItem.badgeValue) }}</label>
                     <a
                   href="javascript:void(0)"
                   class="sidebar-link sidebar-title"
-                  v-if="menuItem.type == 'sub'"
+                  v-if="menuItem.type == 'sub' && menuItem.role.includes(role)"
                   @click="setNavActive(menuItem, index)"
                 >
                   <feather :type="menuItem.icon" class="top"></feather>
@@ -51,7 +52,7 @@
                 <router-link
                   :to="menuItem.path"
                   class="sidebar-link sidebar-title"
-                  v-if="menuItem.type == 'link'"
+                  v-if="menuItem.type == 'link' && menuItem.role.includes(role)"
                   router-link-exact-active
                   exact v-on:click.native="hidesecondmenu()"
                 >
@@ -206,6 +207,7 @@
     name: 'Navmenu',
     data() {
       return {
+        role:"",
         layoutobj:{}
       };
     },
@@ -254,6 +256,17 @@
       }
     },
     created() {
+      localStorage
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      
       window.addEventListener('resize', this.handleResize);
       this.handleResize();
       if (this.$store.state.menu.width < 991) {

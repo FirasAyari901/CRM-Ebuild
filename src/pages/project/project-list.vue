@@ -49,58 +49,54 @@
 
                               </b-form-group>
                                <b-form-group id="example-input-group-2" label="Team" label-for="example-input-2">
-                                  <multiselect  v-model="form.team" :options="teams" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a team"></multiselect>
+                                  <multiselect v-model="form.equipe_id"  :options="teams" label="pseudo" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a team"></multiselect>
      
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
 
                                   <b-form-group id="example-input-group-7" label="Deadline" label-for="example-input-7">
-                                    <datepicker input-class="datepicker-here form-control digits" value-type="YYYY-MM-DD" format="YYYY-MM-DD" v-model="form.deadline" ></datepicker>
+                                   <b-form-datepicker id="example-datepickr" v-model="form.deadline" class="mb-2"></b-form-datepicker>
 
                                 <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
                               </b-form-group>
                                 <b-form-group id="example-input-group-4" label="Start date" label-for="example-input-4">
-                                   <datepicker input-class="datepicker-here form-control digits" :format="format" v-model="form.date_debut"></datepicker>
-
+                                <b-form-datepicker id="example-datepicker" v-model="form.date_debut" class="mb-2"></b-form-datepicker>
 
                                 <b-form-invalid-feedback id="input-4-live-feedback">{{ veeErrors.first('example-input-4') }}</b-form-invalid-feedback>
                               </b-form-group>
                               
                               
                               
-                              <b-form-group id="example-input-group-5" label="File CDC" label-for="example-input-5">
-                                <b-form-file
-                                  id="example-input-5"
-                                  name="example-input-5"
-                                  
-                                  v-model="form.file_cdc"
-                                  v-validate="{ required: true}"
-                                  :state="validateState('example-input-5')"
-                                  aria-describedby="input-5-live-feedback"
-                                  data-vv-as="file CDC"
-                                ></b-form-file>
-
-                                <b-form-invalid-feedback id="input-5-live-feedback">{{ veeErrors.first('example-input-5') }}</b-form-invalid-feedback>
-                              </b-form-group>
-                              <b-form-group id="example-input-group-6" label="Capture DC" label-for="example-input-6">
-                                <b-form-file
-                                  id="example-input-6"
-                                  name="example-input-6"
-                                  
-                                  v-model="form.capture_dc"
-                                  v-validate="{ required: true}"
-                                  :state="validateState('example-input-6')"
-                                  aria-describedby="input-6-live-feedback"
-                                  data-vv-as="capture DC"
-                                ></b-form-file>
-
-                                <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
-                              </b-form-group>
+                          <b-form-group id="example-input-group-6" label="File CDC" label-for="example-input-6">
+                            <b-form-file
+                              id="example-input-6"
+                              name="example-input-6"
+                              @change="file_cdc"
+                              v-model="form.file_cdc"
+                              v-validate="{ required: true}"
+                              :state="validateState('example-input-6')"
+                              aria-describedby="input-6-live-feedback"
+                              data-vv-as="file cdc">
+                            </b-form-file>
+                            <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                          <b-form-group id="example-input-group-6" label="Capture DC" label-for="example-input-6">
+                            <b-form-file
+                              name="example-input-6"
+                              @change="capture_dc"
+                              v-model="form.capture_dc"
+                              v-validate="{ required: true}"
+                              :state="validateState('example-input-6')"
+                              aria-describedby="input-6-live-feedback"
+                              data-vv-as="capture dc">
+                            </b-form-file>
+                            <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
+                          </b-form-group>
                           
 
 
                               <b-form-group id="example-input-group-2" label="Status" label-for="example-input-2">
-                                  <multiselect  v-model="form.status" :options="options" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a status"></multiselect>
+                                  <multiselect  v-model="form.etat" :options="options" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
      
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
@@ -118,7 +114,7 @@
                         </div>
                 
                           <div>
-                            <b-form @submit.stop.prevent="onSubmit">
+                            <b-form @submit.stop.prevent="updateee">
                               <b-form-group id="example-input-group-1" label="Project name" label-for="example-input-1">
                                 <b-form-input
                                   id="example-input-1"
@@ -146,58 +142,54 @@
 
                               </b-form-group>
                                <b-form-group id="example-input-group-2" label="Team" label-for="example-input-2">
-                                  <multiselect  v-model="form.team" :options="teams" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a team"></multiselect>
+                                  <multiselect v-model="form.equipe_id"  :options="teams" label="pseudo" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a team"></multiselect>
      
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
 
                                   <b-form-group id="example-input-group-7" label="Deadline" label-for="example-input-7">
-                                    <datepicker input-class="datepicker-here form-control digits" value-type="YYYY-MM-DD" format="YYYY-MM-DD" v-model="form.deadline" ></datepicker>
+                                   <b-form-datepicker id="example-datepickr" v-model="form.deadline" class="mb-2"></b-form-datepicker>
 
                                 <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
                               </b-form-group>
                                 <b-form-group id="example-input-group-4" label="Start date" label-for="example-input-4">
-                                   <datepicker input-class="datepicker-here form-control digits" :format="format" v-model="form.date_debut"></datepicker>
-
+                                <b-form-datepicker id="example-datepicker" v-model="form.date_debut" class="mb-2"></b-form-datepicker>
 
                                 <b-form-invalid-feedback id="input-4-live-feedback">{{ veeErrors.first('example-input-4') }}</b-form-invalid-feedback>
                               </b-form-group>
                               
                               
                               
-                              <b-form-group id="example-input-group-5" label="File CDC" label-for="example-input-5">
-                                <b-form-file
-                                  id="example-input-5"
-                                  name="example-input-5"
-                                  
-                                  v-model="form.file_cdc"
-                                  v-validate="{ required: true}"
-                                  :state="validateState('example-input-5')"
-                                  aria-describedby="input-5-live-feedback"
-                                  data-vv-as="file CDC"
-                                ></b-form-file>
-
-                                <b-form-invalid-feedback id="input-5-live-feedback">{{ veeErrors.first('example-input-5') }}</b-form-invalid-feedback>
-                              </b-form-group>
-                              <b-form-group id="example-input-group-6" label="Capture DC" label-for="example-input-6">
-                                <b-form-file
-                                  id="example-input-6"
-                                  name="example-input-6"
-                                  
-                                  v-model="form.capture_dc"
-                                  v-validate="{ required: true}"
-                                  :state="validateState('example-input-6')"
-                                  aria-describedby="input-6-live-feedback"
-                                  data-vv-as="capture DC"
-                                ></b-form-file>
-
-                                <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
-                              </b-form-group>
+                          <b-form-group id="example-input-group-6" label="File CDC" label-for="example-input-6">
+                            <b-form-file
+                              id="example-input-6"
+                              name="example-input-6"
+                              @change="file_cdc"
+                              v-model="form.file_cdc"
+                              v-validate="{ required: true}"
+                              :state="validateState('example-input-6')"
+                              aria-describedby="input-6-live-feedback"
+                              data-vv-as="file cdc">
+                            </b-form-file>
+                            <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                          <b-form-group id="example-input-group-6" label="Capture DC" label-for="example-input-6">
+                            <b-form-file
+                              name="example-input-6"
+                              @change="capture_dc"
+                              v-model="form.capture_dc"
+                              v-validate="{ required: true}"
+                              :state="validateState('example-input-6')"
+                              aria-describedby="input-6-live-feedback"
+                              data-vv-as="capture dc">
+                            </b-form-file>
+                            <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
+                          </b-form-group>
                           
 
 
                               <b-form-group id="example-input-group-2" label="Status" label-for="example-input-2">
-                                  <multiselect  v-model="form.status" :options="options" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a status"></multiselect>
+                                  <multiselect  v-model="form.etat" :options="options" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
      
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
@@ -208,7 +200,7 @@
                           </div>
                           </div>
                         </b-modal>
-
+                     
                     </div>
 
                 </div>
@@ -224,37 +216,31 @@
                 
                     <b-card-text>
                       <div class="col-sm-12 p-0">
-  
+                            
                             <div class="row">
-                              <div class="col-xl-4 col-lg-6" v-for="(project,index) in allprojects" :key="index" :class="index < 3 ? 'mb-4' : ''">
+                              <div class="col-xl-4 col-lg-6" v-for="(project,index) in projects" :key="index" :class="index < 3 ? 'mb-4' : ''">
                                 <div class="project-box" >
                                  
                               
-                                    <div @click="redirect(index)">
-                                        <span class="badge" :class="'badge-'+project.type">
-                                        {{ project.badge }}</span>
-                                      <h6>{{ project.title }}</h6>
-                                      <div class="media">
-                                        <img class="img-20 mr-1 rounded-circle" :src='getImgUrl(project.img)' alt="" title="">
-                                        <div class="media-body">
-                                          <p>{{ project.sites }} </p>
-                                        </div>
-                                      </div>
-                                      <p>{{ project.desc }}</p>
+                                    <div @click="redirect(project.id)">
+                                        <span class="badge badge-primary">
+                                        {{ project.attributes.etat }}</span>
+                                      <h6>{{ project.project_name }}</h6>
+                                      
+                                      <p>{{ project.attributes.description }}</p>
                                       <div class="row details">
                                         <div class="col-6">
                                           <span>start date </span>
                                         </div>  
-                                        <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.startdate }}</div>
+                                        <div class="col-6 text-primary" >{{ project.attributes.date_debut }}</div>
                                         <div class="col-6">
                                           <span>deadline</span>
                                         </div>
-                                        <div class="col-6 text-primary" :class="'text-'+project.type">{{ project.deadline }}</div>
+                                        <div class="col-6 text-primary" >{{ project.attributes.deadline }}</div>
                                       </div>
                                     </div>
-                                    <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                     
-                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                    <feather @click="recuperer(project.id)"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                 <feather @click="deleteee(project.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </div>
                               </div>
                             </div>
@@ -282,36 +268,19 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import Multiselect from 'vue-multiselect';
     import Datepicker from 'vuejs-datepicker';
+ import axios from 'axios'; 
 
 
   export default {
+    name:'projects',
     components: {
       Multiselect,
       Datepicker
     },
     data(){
       return {
-        options: [
-          { code: 1, name: 'Open' },
-          { code: 2, name: 'To Do' },
-          { code: 3, name: 'Active' },
-          { code: 4, name: 'Done' },
-          { code: 5, name: 'Closed' }
-        ],
-        teams: [
-          { code: 1, name: 'Open' },
-          { code: 2, name: 'To Do' },
-          { code: 3, name: 'Active' },
-          { code: 4, name: 'Done' },
-          { code: 5, name: 'Closed' }
-        ],
-        status:'',
-        
-        format: 'yyyy-MM-dd',
-
         form: {
         date_debut:'',
         deadline:'',
@@ -320,23 +289,119 @@
         etat:'',
         description: '',
         project_name: '',
+        equipe_id:5
        
        
       },
+        projects:[],
+        options: [
+          { code: 1, name: 'Open' },
+          { code: 2, name: 'To Do' },
+          { code: 3, name: 'Active' },
+          { code: 4, name: 'Done' },
+          { code: 5, name: 'Closed' }
+        ],
+        teams: [],
+        
+        format: 'yyyy-MM-dd',
+
+        
         limitMultiValue:[],
      
       };
     },
-    computed: {
-      ...mapState({
-        allprojects: state => state.common.allprojects,
-        doingprojects: state => state.common.doingprojects,
-        doneprojects: state => state.common.doneprojects
-      })
+
+    created() {
+      this.init()
     },
     methods:{
+      file_cdc(event) {
+        let reader = new FileReader();
+        reader.onload = (event) => {
+          this.form.file_cdc = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        console.log(this.form);
+      },
+      capture_dc(event) {
+        console.log(this.projects);
+        let reader = new FileReader();
+        reader.onload = (event) => {
+          this.form.capture_dc = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        console.log(this.form);
+      },
+      init(){
+       axios.get('projets').then((response)=>{
+         console.log(response.data.projets)
+        this.projects=response.data.projets
+      }) 
+      axios.get('equipes').then((response)=>{
+        this.teams=response.data.Equipes
+      })
+      },
       onSubmit() {
-              console.log(this.form);
+        this.form.equipe_id = this.form.equipe_id.id
+        this.form.etat = this.form.etat.name
+        console.log(this.form);
+       this.$validator.validateAll().then(result => {
+          if (!result) {
+            this.$toastr.i('correct the errors'); 
+            return;
+          }
+          axios.post('projets',this.form).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('project added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            } else{
+            }
+          });
+          return;
+        });
+
+    },
+    recuperer(id){
+      axios.get('projets/'+String(id)).then((response)=>{
+      this.date_debut = response.data.attributes.date_debut
+      this.deadline = response.data.attributes.deadline 
+      this.etat = response.data.attributes.etat 
+      this.description = response.data.attributes.description
+      this.project_name = response.data.project_name
+      this.equipe_id = this.teams.find(function(item, index) {
+      	if(item.id == this.equipe_id)
+	       	return true;
+});
+      }) 
+      
+      
+    },
+     updateee() {
+        this.form.equipe_id = this.form.equipe_id.id
+        this.form.etat = this.form.etat.name
+        console.log(this.form);
+       
+          axios.post('projets',this.form).then(res =>{
+              this.$toastr.s('project added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
+
+    },
+    deleteee(id) {
+ axios.delete('projets/'+String(id)).then(res =>{
+              this.$toastr.s('project deleted ! ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
 
     },
     validateState(ref) {
@@ -367,7 +432,7 @@
         this.value.push(tag);
       },
       redirect (index) {
-        this.$router.push({path:'/app/project/1'});  
+        this.$router.push({path:'/app/project/'+String(index)});  
       },
       getImgUrl(path) {
         return require('@/assets/images/'+path);

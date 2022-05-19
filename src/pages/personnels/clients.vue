@@ -92,6 +92,7 @@
                             </b-form-file>
                             <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
                           </b-form-group>
+                          
                           <b-button type="submit"  variant="primary">Submit</b-button>
                           <b-button class="ml-2" @click="resetForm()">Reset</b-button>
                         </b-form>
@@ -116,18 +117,6 @@
                               data-vv-as="Name">
                             </b-form-input>
                             <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
-                          </b-form-group>
-                          <b-form-group id="example-input-group-2" label="password" label-for="example-input-2">
-                            <b-form-input
-                              id="example-input-2"
-                              name="example-input-2"
-                              v-model="form.password"
-                              v-validate="{ required: true ,min:3}"
-                              :state="validateState('example-input-2')"
-                              aria-describedby="input-2-live-feedback"
-                              data-vv-as="password">
-                            </b-form-input>
-                            <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                           </b-form-group>
                           <b-form-group id="example-input-group-3" label="num_tel" label-for="example-input-3">
                             <b-form-input
@@ -177,6 +166,18 @@
                               data-vv-as="logo">
                             </b-form-file>
                             <b-form-invalid-feedback id="input-6-live-feedback">{{ veeErrors.first('example-input-6') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                          <b-form-group id="example-input-group-5" label="Status" label-for="example-input-5">
+                            <b-form-input
+                              id="example-input-5"
+                              name="example-input-5"
+                              v-model="form.etat"
+                              v-validate="{ required: true, min:3  }"
+                              :state="validateState('example-input-5')"
+                              aria-describedby="input-5-live-feedback"
+                              data-vv-as="status">
+                            </b-form-input>
+                             <b-form-invalid-feedback id="input-5-live-feedback">{{ veeErrors.first('example-input-5') }}</b-form-invalid-feedback>
                           </b-form-group>
                           <b-button type="submit"  variant="primary">Submit</b-button>
                           <b-button class="ml-2" @click="resetForm()">Reset</b-button>
@@ -249,7 +250,7 @@
           password:'',
           name: '',
           raison_sociale: '',
-          etat: '',
+          
         },
         id:0,
         selected: null,
@@ -287,7 +288,7 @@
 
     created() {
       axios.get('clients').then((response)=>{
-        this.items=response.data.staff;
+        this.items=response.data.clients;
       });   
       this.totalRows = this.items.length;
     },
@@ -309,10 +310,9 @@
       test (item) {
         console.log(item);
         this.form.name = item.name;
-        this.form.logo = item.CV;
+        this.form.logo = item.logo;
         this.form.etat = item.etat;
         this.form.email = item.email;
-        this.form.password = item.password;
         this.form.raison_sociale = item.raison_sociale;
         this.form.num_tel = item.num_tel;
         this.id = item.id;
@@ -364,6 +364,7 @@
         });
       },
       updatee() {
+        console.log(this.form);
         this.$validator.validateAll().then(result => {
           if (!result) {
             this.$toastr.i('correct the errors'); 

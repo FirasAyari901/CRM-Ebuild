@@ -5,49 +5,74 @@
       "title": "Customers",
       "icon": "users",
       "type": "link",
-      "bookmark": true
+      "bookmark": true,
+      "role":["admin"] 
     },
     {
       "path": "/app/staff",
       "title": "Staff",
       "icon": "users",
       "type": "link",
-      "bookmark": true
+      "bookmark": true,
+      "role":["admin"]
     },
     {
       "path": "/app/teams",
       "title": "Teams",
       "icon": "user-check",
       "type": "link",
-      "bookmark": true
+      "bookmark": true,
+      "role":["admin"]
     },
-    {
-      "path": "/app/projects",
-      "title": "projects",
-      "icon": "airplay",
-      "type": "link",
-      "bookmark": true
-    },
-    {
-      "path": "/app/operations",
-      "title": "operations",
-      "icon": "dollar-sign",
-      "type": "link",
-      "bookmark": true
-    },
+    
     {
       "path": "/app/tickets",
       "title": "tickets",
       "icon": "clipboard",
       "type": "link",
-      "bookmark": true
+      "bookmark": true,
+      "role":["admin","client","other"]
     },
     {
       "path": "/app/documents",
       "title": "documents",
       "icon": "file-text",
       "type": "link",
-      "bookmark": true
+      "bookmark": true,
+      "role":["admin","client"]
+    }
+    ,
+    {
+      "path": "/app/projects",
+      "title": "projects",
+      "icon": "airplay",
+      "type": "link",
+      "bookmark": true,
+      "role":["admin","other"]
+    },
+    {
+      "path": "/app/tasks",
+      "title": "tasks",
+      "icon": "server",
+      "type": "link",
+      "bookmark": true,
+      "role":["admin","other"]
+    },
+    {
+      "path": "/app/subtasks",
+      "title": "subtasks",
+      "icon": "server",
+      "type": "link",
+      "bookmark": true,
+      "role":["admin","other"]
+    },
+    {
+      "path": "/app/subtasks",
+      "title": "responses",
+      "icon": "check",
+      "type": "link",
+      "bookmark": true,
+      "role":["other","client"]
     }
     
   ]

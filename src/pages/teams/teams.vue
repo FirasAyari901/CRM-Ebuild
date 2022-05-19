@@ -23,12 +23,12 @@
                                         <div class="form-row">
                                           <div class="form-group col-md-12">
                                             <label for="addpseudo">Pseudo</label>
-                                            <input class="form-control" id="addpseudo" type="text" required="" autocomplete="off">
+                                            <input class="form-control" v-model="pseudo" type="text" required="" autocomplete="off">
                                           </div>
                                           <div class="mb-2">
-                                            <div class="col-form-label">Default Placeholder</div>
-                                            <multiselect  v-model="multiValue" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" 
-                                              label="name" track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag"></multiselect>
+                                            <div class="col-form-label">Staff</div>
+                                              <multiselect  v-model="multiValue" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" 
+                                               label="name" track-by="name" :options="staff" :multiple="true" :taggable="true" ></multiselect>
                                           </div>
                                         </div>
                                         <b-button class="btn "  onclick="submitBookMark()" type="submit" variant="secondary">Add</b-button>
@@ -59,8 +59,8 @@
                               <div class="card-header d-flex">
                                 <h6 class="mb-0">{{team.pseudo}}</h6>
                                 <ul>
-                                  <li><a href="#" @click="$bvModal.show('bv-modal-edit')"><feather type="edit" stroke="#ffcd01" ></feather></a></li>    
-                                  <li><a href="#"><feather type="trash-2" stroke="red" ></feather></a></li>
+                                  <li ><a href="#" @click="$bvModal.show('bv-modal-edit')"><feather type="edit" stroke="#ffcd01" ></feather></a></li>    
+                                  <li><a href="#" @click="deletee"><feather type="trash-2" stroke="red" ></feather></a></li>
                                 </ul>
                                 <b-modal id="bv-modal-edit" centered size="lg" hide-footer>                      
                                         <template #modal-title>
@@ -71,7 +71,7 @@
                                         <div class="form-row">
                                           <div class="form-group col-md-12">
                                             <label for="pseudo">Pseudo</label>
-                                            <input class="form-control" id="pseudo" type="text" required="" autocomplete="off">
+                                            <input class="form-control" v-model="pseudoupdate" id="pseudo" type="text" required="" autocomplete="off">
                                           </div>
                                           <div class="form-group col-md-12">
                                             <div class="col-form-label">Select stuff </div>
@@ -96,7 +96,7 @@
                                               <p class="weburl_0">{{ item.role }}</p>
                                               <div class="hover-block">
                                                 <ul>
-                                                  <li><a href="#"><feather type="trash-2"></feather></a></li>
+                                                  <li><a href="#" @click="deletemember(item.id)"><feather type="trash-2"></feather></a></li>
                                                   
                                                 </ul>
                                               </div>
@@ -137,18 +137,14 @@
         liststyle: false,
         data : [],
         favourite : [],
-        options: [
-          { code: 1, name: 'Alabama' },
-          { code: 2, name: 'Wyoming' },
-          { code: 3, name: 'Coming' },
-          { code: 4, name: 'Hanry Die' },
-          { code: 5, name: 'John Doe' }
-        ],
+        staff: [],
         singleValue:'',
         multiValue:[],
         items:[],
         members:[],
-        team :{}
+        team :{},
+        pseudoupdate:'',
+        pseudo:''
       };
     },
  
@@ -156,32 +152,41 @@
       this.init()
     },
     methods:{
-
+      deletee () {
+        axios.delete('equipes/'+String(this.team.id));
+        setTimeout(() => {
+          location.reload();
+        }, '500');
+      },
+      deletemember (id) {
+       const body={
+          personnel_id:id,
+          equipe_id:this.team.id,
+        }
+        axios.post('persoequipeRemove',body);
+        setTimeout(() => {
+          location.reload();
+        }, '500');
+      },
       init(){
         axios.get('equipes').then((response)=>{
         this.items=response.data.Equipes
       })
       
-      axios.get('staff').then((response)=>{
-        this.options=response.data.staff
+      axios.get('personnels').then((response)=>{
+        this.staff=response.data.staff
+        console.log(response.data.staff)
       })
       
       },
-       addTag (newTag) {
-
-        const tag = {
-          name: newTag,
-          code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-        };
-        this.options.push(tag);
-        this.value.push(tag);
-      },
+       
 
       say: function (message) {
  
           axios.get('equipes/'+String(message)).then((response)=>{
         this.team=response.data.equipe 
         this.members=response.data.members
+        this.pseudoupdate = response.data.equipe.pseudo
       })
  
       },
@@ -191,11 +196,25 @@
        console.log(this.singleValue)
       },
       addTeam(){
-       const addpseudo = document.getElementById("addpseudo").value
-       console.log(addpseudo)
        const ids = this.multiValue.map(x => x.id);
-       console.log(ids)
+       const team = {
+          pseudo:this.pseudo,
+          personnels:ids
+    
+        }
+        console.log(team);
+        axios.post('equipes',team).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('Team created ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            } else{
+            }
+          });
+       
       },
+  
      
 
     }

@@ -9,7 +9,6 @@
       <ul class="nav-menus">
         
         
-        <Notifications />
         
             <li>
               <Mode />
