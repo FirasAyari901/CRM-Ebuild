@@ -111,6 +111,15 @@
        
        
       },
+      form2: {
+          num_tel:'',
+          CV:'',
+          image:'',
+          email:'',
+          password:'',
+          name: '',
+          role: '',
+        },
       options: [
           { code: 1, name: 'Open' },
           { code: 2, name: 'To Do' },

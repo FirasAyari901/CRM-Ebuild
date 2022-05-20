@@ -44,8 +44,21 @@
                               data-vv-as="Name">
                             </b-form-input>
                             <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
-                          </b-form-group>     
-                          <b-form-group id="example-input-group-2" label="Status " label-for="example-input-2">
+                          </b-form-group> 
+                          <b-form-group id="example-input-group-7" label="Customer" label-for="example-input-7">
+                            <b-form-select
+                             
+                              name="example-input-7"
+                              v-model="form.Customer"
+                              v-validate="{ required: true }"
+                              :options="customer"
+                              :state="validateState('example-input-7')"
+                              aria-describedby="input-7-live-feedback"
+                              data-vv-as="role">
+                            </b-form-select>
+                            <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
+                          </b-form-group>    
+                          <b-form-group id="example-input-group-2" label="Etat doc " label-for="example-input-2">
                             <b-form-input
                               id="num_tel"
                               name="example-input-2"
@@ -57,7 +70,19 @@
                             </b-form-input>
                             <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                           </b-form-group>
-                          <b-form-group id="example-input-group-3" label="Description" label-for="example-input-3">
+                          <b-form-group id="example-input-group-2" label="Description " label-for="example-input-2">
+                            <b-form-input
+                              id="num_tel"
+                              name="example-input-2"
+                              v-model="form.description"
+                              v-validate="{ required: true  }"
+                              :state="validateState('example-input-2')"
+                              aria-describedby="input-2-live-feedback"
+                              data-vv-as="num_tel">
+                            </b-form-input>
+                            <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                          <b-form-group id="example-input-group-3" label="Info supp" label-for="example-input-3">
                             <b-form-input
                               id="email"
                               name="example-input-3"
@@ -70,9 +95,59 @@
                             <b-form-invalid-feedback id="input-3-live-feedback">{{ veeErrors.first('example-input-3') }}</b-form-invalid-feedback>
                           </b-form-group>
 
+                          <h5>Operations</h5>
+                          <div id="form-repeter" :key="index" v-for="(operation, index) in form.operations">
+                          <b-row>
+                            <b-col>
+                              <b-form-group id="example-input-group-3" label="Nature" label-for="example-input-3">
+                            <b-form-input
                           
+                              name="example-input-3"
+                              v-model="operation.nature"
+                              v-validate="{ required: true,  }"
+                              :state="validateState('example-input-3')"
+                              aria-describedby="input-3-live-feedback"
+                              data-vv-as="Nature">
+                            </b-form-input>
+                            <b-form-invalid-feedback id="input-3-live-feedback">{{ veeErrors.first('example-input-3') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                          </b-col>
+                            <b-col>
+                             <b-form-group id="example-input-group-1" label="Amount HT" label-for="example-input-1">
+                            <b-form-input
+                              id="name"
+                              name="example-input-1"
+                              v-model="operation.AmountHT"
+                              v-validate="{ required: true,numeric,  }"
+                              :state="validateState('example-input-1')"
+                              aria-describedby="input-1-live-feedback"
+                              data-vv-as="Name">
+                            </b-form-input>
+                            <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
+                          </b-form-group>
+                            </b-col>
+                            <b-col>
+                              <b-form-group id="example-input-group-1" label="Amount TVA" label-for="example-input-1">
+                            <b-form-input
+                              id="name"
+                              name="example-input-1"
+                              v-model="operation.AmountTVA"
+                              v-validate="{ required: true,numeric,  }"
+                              :state="validateState('example-input-1')"
+                              aria-describedby="input-1-live-feedback"
+                              data-vv-as="Name">
+                            </b-form-input>
+                            <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
+                          </b-form-group> 
+                            </b-col>
+                          </b-row>
+                          <hr>
+                          </div>
                           
-                          <b-button type="submit"  variant="primary">Submit</b-button>
+                          <b-button @click="addForm" class="btn btn-secondary">Add operation</b-button>
+                          <br><br>
+                          <b-button type="submit"  variant="primary">Send PDF</b-button><span> .</span>
+                          <b-button type="submit"  variant="primary">Download PDF</b-button>
                         </b-form>
                       </div>
                     </div>
@@ -91,6 +166,9 @@
                 <px-card title="" :actions="false">
                   <div slot="with-padding">
                     <div class="row">
+                     
+                      
+                   
                       <div class="col-xl-4 col-md-6 box-col-6">
                         <div class="prooduct-details-box">                                 
                           <div class="media">
@@ -105,75 +183,8 @@
                               <div class="avaiabilty">
                                 <div class="text-success">20/04/2022</div>
                             </div>
-                            <div class="avaiabilty ">
-                                <div class="text-success">document type : appraisal</div>
-                            </div>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-                              </div>
-                              <br>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">price HT</div>: 1300 TND
-                              </div>
-                              
-                              <br>                               
-                              <div class="avaiabilty">
-                              <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                     
-                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-4 col-md-6 box-col-6">
-                        <div class="prooduct-details-box">                                 
-                          <div class="media">
-                            <div class="media-body ml-3">
-                              <div class="product-name">
-                                
-                              </div>
-                              <div class="product-name">
-                              <span class="badge badge-primary">created</span>
-                              </div>
-                              <br>
-                              <div class="avaiabilty">
-                                <div class="text-success">20/04/2022</div>
-                            </div>
-                            <div class="avaiabilty ">
-                                <div class="text-success">document type : bills</div>
-                            </div>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-                              </div>
-                              <br>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">price HT</div>: 210 TND
-                              </div>
-                              
-                              <br>                               
-                              <div class="avaiabilty">
-                              <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                     
-                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-4 col-md-6 box-col-6">
-                        <div class="prooduct-details-box">                                 
-                          <div class="media">
-                            <div class="media-body ml-3">
-                              <div class="product-name">
-                                
-                              </div>
-                              <div class="product-name">
-                              <span class="badge badge-primary">comfirmed</span>
-                              </div>
-                              <br>
-                              <div class="avaiabilty">
-                                <div class="text-success">20/04/2022</div>
+                             <div class="avaiabilty ">
+                                <div class="text-primary">tucal</div>
                             </div>
                             <div class="avaiabilty ">
                                 <div class="text-success">document type : appraisal</div>
@@ -196,8 +207,45 @@
                           </div>
                         </div>
                       </div>
-                      
-
+                      <div class="col-xl-4 col-md-6 box-col-6">
+                        <div class="prooduct-details-box">                                 
+                          <div class="media">
+                            <div class="media-body ml-3">
+                              <div class="product-name">
+                                
+                              </div>
+                              <div class="product-name">
+                              <span class="badge badge-primary">confirmed</span>
+                              </div>
+                              <br>
+                              <div class="avaiabilty">
+                                <div class="text-success">20/04/2022</div>
+                            </div>
+                             <div class="avaiabilty ">
+                                <div class="text-primary">customer 1</div>
+                            </div>
+                            <div class="avaiabilty ">
+                                <div class="text-success">document type : appraisal</div>
+                            </div>
+                              <div class="price d-flex"> 
+                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
+                              </div>
+                              <br>
+                              <div class="price d-flex"> 
+                                <div class="text-muted mr-2">price HT</div>: 3000 TND
+                              </div>
+                              
+                              <br>                               
+                              <div class="avaiabilty">
+                              <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                     
+                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+               
                       
                       
                     </div>
@@ -219,8 +267,12 @@
     data(){
       return {
         roles: [
-          { value: 'bills', text: 'bills' },
-          { value: 'appraisal', text: 'appraisal' }
+         { value: 'appraisal', text: 'appraisal' },
+          { value: 'bills', text: 'bills' }
+        ],
+        customer: [
+         { value: 'customer 1', text: 'customer 1' },
+          { value: 'tucal', text: 'tucal' }
         ],
         form: {
           Typedoc:'',

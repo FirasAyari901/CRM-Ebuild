@@ -24,6 +24,7 @@ import Subtasks from '../pages/subtask/subtasks';
 import Operations from '../pages/operations/operations';
 import Tickets from '../pages/tickets';
 import Documents from '../pages/document';
+import Responses from '../pages/responses';
 
 
  
@@ -117,23 +118,16 @@ const routes = [
     component: Documents,
   
   },
-
-  ]
-},
-{
-  path: '/form',
-  component: Body, 
-  children: [
-
   {
-    path: 'form',
+    path: 'responses',
     name: 'FilterTable',
-    component: FormWizrd,
-     
+    component: Responses,
+  
   },
- 
+
   ]
 },
+
 
   
   

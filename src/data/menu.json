@@ -67,12 +67,12 @@
       "role":["admin","other"]
     },
     {
-      "path": "/app/subtasks",
+      "path": "/app/responses",
       "title": "responses",
       "icon": "check",
       "type": "link",
       "bookmark": true,
-      "role":["other","client"]
+      "role":["client"]
     }
     
   ]
