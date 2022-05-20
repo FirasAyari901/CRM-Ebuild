@@ -46,7 +46,7 @@ class Personnel extends Authenticatable
     {
         return $this->hasMany(Reponse::class);
     }
-    public function tasks()
+    public function taches()
     {
         return $this->hasMany(Tache::class);
     }

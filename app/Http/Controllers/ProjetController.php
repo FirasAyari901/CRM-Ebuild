@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Projet;
 use App\Models\Equipe;
-use App\Models\Ticket;
+use App\Models\Tache;
 use App\Http\Resources\ProjetResource;
 use App\Http\Resources\EquipeResource;
-use App\Http\Resources\TicketResource;
+use App\Http\Resources\TacheResource;
 use App\Http\Requests\ProjetRequest;
 
 class ProjetController extends Controller
@@ -44,7 +44,6 @@ class ProjetController extends Controller
     public function store(ProjetRequest $request)
     {
         $projet = Projet::create([
-            'ticket_id' => $request->input('ticket_id'),
             'equipe_id' => $request->input('equipe_id'),
             'project_name' => $request->input('project_name'),
             'description'=> $request->input('description'),
@@ -55,7 +54,7 @@ class ProjetController extends Controller
             'capture_dc ' => $request->input('capture_dc')
         ]);
         
-        return reponse()->json([
+        return response()->json([
             'status' => 200,
             'projet' => new ProjetResource($projet)
         ]);
@@ -76,11 +75,13 @@ class ProjetController extends Controller
             ]);
         }
         else {
-            $equipe = $projet->equipe();
+            $equipe = $projet->equipe ;
+            $taches = $projet->taches ;
             return response()->json([
                 'status' => 200,
                 'projet' => new ProjetResource($projet),
                 'equipe' => new EquipeResource($equipe),
+                'taches' => TacheResource::collection($taches)
             ]);
         }
     }
@@ -112,7 +113,7 @@ class ProjetController extends Controller
             ]);
         }
         else {
-            $projet = update([
+            $projet->update([
                 'equipe_id' => $request->input('equipe_id'),
                 'project_name' => $request->input('project_name'),
                 'description'=> $request->input('description'),

@@ -47,7 +47,7 @@ class ClientController extends Controller
             'password' => bcrypt($request->input('password')),
             'num_tel' => $request->input('num_tel'),
             'raison_sociale' => $request->input('raison_sociale'),
-            'logo' => $request->input('CV'),
+            'logo' => $request->input('logo'),
             'etat' => 'prospection'
         ]));
 
@@ -109,7 +109,6 @@ class ClientController extends Controller
             $client->update(([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'password' => bcrypt($request->input('password')),
                 'num_tel' => $request->input('num_tel'),
                 'raison_sociale' => $request->input('raison_sociale'),
                 'logo' => $request->input('CV'),

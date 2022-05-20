@@ -23,7 +23,7 @@ class SousTache extends Model
         'etat'
     ];
 
-    public function task()
+    public function tache()
     {
         return $this->belongsTo(Tache::class);
     }

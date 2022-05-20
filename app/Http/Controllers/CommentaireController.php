@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
-use App\Http\Requests\StoreCommentaireRequest;
-use App\Http\Requests\UpdateCommentaireRequest;
+use App\Models\Tache;
+use App\Models\SousTache;
+use App\Models\Personnel;
+use App\Http\Resources\PersonnelResource;
+use App\Http\Resources\SousTacheResource;
+use App\Http\Resources\CommentaireResource;
+use App\Http\Resources\TacheResource;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CommentaireRequest;
 
 class CommentaireController extends Controller
 {
@@ -34,18 +41,18 @@ class CommentaireController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCommentaireRequest  $request
+     * @param  \App\Http\Requests\CommentaireRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentaireRequest $request)
+    public function store(CommentaireRequest $request)
     {
         $commentaire = Commentaire::create(([
             'tache_id' => $request->input('tache_id'),
             'soustache_id' => $request->input('soustache_id'),
+            'personnel_id' => Auth::personnel()->id,
             'file' => $request->input('file'),
             'image' => $request->input('image'),
-            'description' => $request->input('description'),
-            'perso_id' => $request->input('perso_id')
+            'description' => $request->input('description')
         ]));
 
         return response()->json([
@@ -60,8 +67,9 @@ class CommentaireController extends Controller
      * @param  \App\Models\Commentaire  $commentaire
      * @return \Illuminate\Http\Response
      */
-    public function show(Commentaire $commentaire)
+    public function show($id)
     {
+        $commentaire = Commentaire::where('id', $id)->first();
         if(!commentaire) {
             return response()->json([
                 'status' => 401,
@@ -69,14 +77,10 @@ class CommentaireController extends Controller
             ]);
         }
         else {
-            $tache = $commentaire->tache();
-            $sousTache = $commentaire->soustache();
-            $client = $commentaire->client();
-            $user = $client->user();
-
+            $tache = $commentaire->tache;
+            $sousTache = $commentaire->soustache;
             return response()->json([
                 'status' => 200,
-                'comment left for the client' => new UserResource($user),
                 'tache'  => new TacheResource($tache),
                 'sous-tache' => new SousTacheResource($sousTache),
                 'commentaire' => new CommentaireResource($commentaire)
@@ -98,12 +102,13 @@ class CommentaireController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommentaireRequest  $request
+     * @param  \App\Http\Requests\CommentaireRequest  $request
      * @param  \App\Models\Commentaire  $commentaire
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCommentaireRequest $request, Commentaire $commentaire)
+    public function update(CommentaireRequest $request, $id)
     {
+        $commentaire = Commentaire::where('id', $id)->first();
         if(!commentaire) {
             return response()->json([
                 'status' => 401,
@@ -114,10 +119,10 @@ class CommentaireController extends Controller
             $commentaire = update(([
                 'tache_id' => $request->input('tache_id'),
                 'soustache_id' => $request->input('soustache_id'),
+                'personnel_id' => Auth::personnel()->id,
                 'file' => $request->input('file'),
                 'image' => $request->input('image'),
-                'description' => $request->input('description'),
-                'perso_id' => $request->input('perso_id')
+                'description' => $request->input('description')
             ]));
 
             return response()->json([
@@ -134,6 +139,7 @@ class CommentaireController extends Controller
      */
     public function destroy(Commentaire $commentaire)
     {
+        $commentaire = Commentaire::where('id', $id)->first();
         if(!$commentaire) {
             return response()->json([
                 'status' => 401,

@@ -16,11 +16,11 @@ class TacheResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->titre,
+            'titre' => $this->titre,
             'attributes' => [
                 'description' => $this->description,
                 'deadline' => $this->deadline,
-                'status' => $this->etat
+                'etat' => $this->etat
             ] 
         ];
     }

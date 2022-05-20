@@ -31,7 +31,7 @@ class Tache extends Model
     {
         return $this->belongsTo(Personnel::class);
     }
-    public function subtasks()
+    public function soustaches()
     {
         return $this->hasMany(SousTache::class);
     }

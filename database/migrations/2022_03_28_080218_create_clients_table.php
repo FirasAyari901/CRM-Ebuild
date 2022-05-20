@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('num_tel');
             $table->string('raison_sociale');
             $table->binary('logo')->nullable();
-            $table->binary('etat');
+            $table->string('etat');
             $table->timestamps();
         });
     }

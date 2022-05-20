@@ -108,7 +108,6 @@ class PersonnelController extends Controller
             $personnel->update([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'password' => bcrypt($request->input('password')),
                 'num_tel' => $request->input('num_tel'),
                 'role' => $request->input('role'),
                 'CV' => $request->input('CV'),

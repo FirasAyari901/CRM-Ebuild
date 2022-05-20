@@ -34,7 +34,7 @@ class Projet extends Model
     {
         return $this->belongsTo(Equipe::class);
     }
-    public function tasks()
+    public function taches()
     {
         return $this->hasMany(Tache::class);
     }

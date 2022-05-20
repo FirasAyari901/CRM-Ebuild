@@ -44,10 +44,15 @@ class EquipeController extends Controller
         $equipe = Equipe::create([
             'pseudo' => $request->input('pseudo'),
         ]);
-
+        $members = array();
+        $members = $request->input("personnels");
+        foreach($members as $personnel) {
+            $equipe->personnels()->attach($personnel);
+        }
         return response()->json([
             'status' => 200,
-            'equipe' => new EquipeResource($equipe)
+            'equipe' => new EquipeResource($equipe),
+            'personnels' => PersonnelResource::collection($equipe->personnels)
         ]);
   
     }
@@ -58,7 +63,7 @@ class EquipeController extends Controller
      * @param  \App\Models\Equipe  $equipe
      * @return \Illuminate\Http\Response
      */
-    public function show(Equipe $equipe)
+    public function show(Equipe $equipe )
     {
         if(!$equipe) {
             return response()->json([
@@ -108,10 +113,15 @@ class EquipeController extends Controller
             $equipe->update([
                 'pseudo' => $request->input('pseudo'),
             ]);
-
+            $members = array();
+            $members = $request->input("personnels");
+            foreach($members as $personnel) {
+                $equipe->personnels()->attach($personnel);
+            }
             return response()->json([
                 'status' => 200,
-                'equipe' => new EquipeResource($equipe)
+                'equipe' => new EquipeResource($equipe),
+                'personnels' => PersonnelResource::collection($equipe->personnels)
             ]);
         }
     }

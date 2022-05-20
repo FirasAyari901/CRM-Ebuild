@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tache;
+use App\Models\Projet;
+use App\Models\Personnel;
+use App\Models\SousTache;
+use App\Http\Resources\TacheResource;
+use App\Http\Resources\SousTacheResource;
+use App\Http\Resources\ProjetResource;
+use App\Http\Resources\PersonnelResource;
 use App\Http\Requests\TacheRequest;
-
 
 class TacheController extends Controller
 {
@@ -41,10 +47,11 @@ class TacheController extends Controller
     {
         $tache = Tache::create(([
             'projet_id' => $request->input('projet_id'),
+            'personnel_id' => $request->input('personnel_id'),
             'titre' => $request->input('titre'),
             'deadline' => $request->input('deadline'),
             'description' => $request->input('description'),
-            'perso_id' => $request->input('perso_id')
+            'etat' => $request->input('etat')
         ]));
 
         return response()->json([
@@ -59,8 +66,9 @@ class TacheController extends Controller
      * @param  \App\Models\Tache  $tache
      * @return \Illuminate\Http\Response
      */
-    public function show(Tache $tache)
+    public function show($id)
     {
+        $tache = Tache::where('id', $id)->first();
         if(!$tache) {
             return response()->json([
                 'status' => 401,
@@ -68,14 +76,16 @@ class TacheController extends Controller
             ]);
         }
         else {
-            $projet = $tache->projet();
-            $personnel = $tache->personnel();
+            $projet = $tache->projet;
+            $personnel = $tache->personnel;
+            $soustaches = $tache->soustaches;
 
             return response()->json([
                 'status' => 200,
                 'tache' => new TacheResource($tache),
                 'projet' => new ProjetResource($projet),
-                'personnel' => new PersonnelResource($personnel)
+                'personnel' => new PersonnelResource($personnel),
+                'soustaches' => SousTacheResource::collection($soustaches)
             ]);
         }
     }
@@ -98,8 +108,9 @@ class TacheController extends Controller
      * @param  \App\Models\Tache  $tache
      * @return \Illuminate\Http\Response
      */
-    public function update(TacheRequest $request, Tache $tache)
+    public function update($id , TacheRequest $request)
     {
+        $tache = Tache::where('id', $id)->first();
         if(!$tache) {
             return response()->json([
                 'status' => 401,
@@ -109,10 +120,11 @@ class TacheController extends Controller
         else {
             $tache->update([
                 'projet_id' => $request->input('projet_id'),
+                'personnel_id' => $request->input('personnel_id'),
                 'titre' => $request->input('titre'),
                 'deadline' => $request->input('deadline'),
                 'description' => $request->input('description'),
-                'perso_id' => $request->input('perso_id')
+                'etat' => $request->input('etat')
             ]);
 
             return response()->json([
@@ -128,8 +140,9 @@ class TacheController extends Controller
      * @param  \App\Models\Tache  $tache
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tache $tache)
+    public function destroy($id)
     {
+        $tache = Tache::where('id', $id)->first();
         if(!$tache) {
             return response()->json([
                 'status' => 401,

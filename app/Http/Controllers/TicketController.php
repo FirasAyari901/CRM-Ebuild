@@ -43,15 +43,16 @@ class TicketController extends Controller
      */
     public function store(TicketRequest $request)
     {
-        $client = Client::find(Auth::client()->id);
-        if ($client->etat != "prospection"){
+        //$client = Client::find(Auth::client()->id);
+        //if ($client->etat != "prospection"){
             $ticket = Ticket::create(([
-                'client_id' => $client->id,
+                'client_id' => $request->input('client_id'),
+                'projet_id' => $request->input('projet_id'),
                 'titre' => $request->input('titre'),
                 'description' => $request->input('description'),
                 'file' => $request->input('file')
             ]));
-        }
+        //}
 
         return response()->json([
             'status' => 200,
@@ -67,18 +68,19 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $client = Client::find(Auth::client()->id);
-        if($client != $ticket->client()) {
+        //$client = Client::find(Auth::client()->id);
+        if(!$ticket) {
             return response()->json([
                 'status' => 401,
                 'message' => 'The ticket data does not exist'
             ]);
         }
         else {
+            $client = $ticket->client;
             return response()->json([
                 'status' => 200,
                 'ticket' => new TicketResource($ticket),
-                'client' => new ClientResource($client)
+                //'client' => new ClientResource($client)
             ]);
         }
     }
@@ -103,8 +105,8 @@ class TicketController extends Controller
      */
     public function update(TicketRequest $request, Ticket $ticket)
     {
-        $client = Client::find(Auth::client()->id);
-        if($client != $ticket->client()) {
+        //$client = Client::find(Auth::client()->id);
+        if(!$ticket->client) {
             return response()->json([
                 'status' => 401,
                 'message' => 'The ticket data does not exist'
@@ -112,9 +114,11 @@ class TicketController extends Controller
         }
         else {
             $ticket = update(([
+                'client_id' => $request->input('client_id'),
+                'projet_id' => $request->input('projet_id'),
                 'titre' => $request->input('titre'),
                 'description' => $request->input('description'),
-                
+                'file' => $request->input('file')
             ]));
 
             return response()->json([

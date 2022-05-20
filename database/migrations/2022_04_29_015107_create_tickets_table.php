@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('client_id')->unsigned();  
+            $table->bigInteger('client_id')->unsigned();
+            $table->bigInteger('projet_id')->unsigned();   
             $table->string('titre');
             $table->text('description');
             $table->binary('file')->nullable();
@@ -24,6 +25,10 @@ return new class extends Migration
             $table->foreign('client_id')
                 ->references('id')
                 ->on('clients')
+                ->onDelete('cascade');
+            $table->foreign('projet_id')
+                ->references('id')
+                ->on('projets')
                 ->onDelete('cascade');
         });
     }

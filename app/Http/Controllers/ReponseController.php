@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reponse;
+use App\Models\Ticket;
+use App\Models\Client;
+use App\Http\Resources\ReponseResource;
+use App\Http\Resources\TicketResource;
+use App\Http\Resources\ClientResource;
 use App\Http\Requests\StoreReponseRequest;
-use App\Http\Requests\UpdateReponseRequest;
+
 
 class ReponseController extends Controller
 {
@@ -34,13 +39,13 @@ class ReponseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreReponseRequest  $request
+     * @param  \App\Http\Requests\ReponseRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreReponseRequest $request)
     {
         $reponse = Reponse::create(([
-            'client_id' => $request->input('client_id'),
+            'personnel_id' => Auth::personnel()->id,
             'ticket_id' => $request->input('ticket_id'),
             'titre' => $request->input('titre'),
             'description' => $request->input('description'),
@@ -60,8 +65,9 @@ class ReponseController extends Controller
      * @param  \App\Models\Reponse  $reponse
      * @return \Illuminate\Http\Response
      */
-    public function show(Reponse $reponse)
+    public function show($id)
     {
+        $reponse = Reponse::where('id', $id)->first();
         if(!$reponse) {
             return response()->json([
                 'status' => 401,
@@ -69,9 +75,11 @@ class ReponseController extends Controller
             ]);
         }
         else {
+            $ticket = $reponse->ticket;
             return response()->json([
                 'status' => 200,
-                'reponse' => new ReponseResource($reponse)
+                'reponse' => new ReponseResource($reponse),
+                'ticket' => new ReponseResource($ticket)
             ]);
         }
     }

@@ -21,7 +21,7 @@ class ClientResource extends JsonResource
             'num_tel' => $this->num_tel,
             'raison_sociale' => $this->raison_sociale,
             'logo' => $this->logo,
-            'status' => $this->etat
+            'etat' => $this->etat
         ];
     }
 }

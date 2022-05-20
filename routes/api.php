@@ -8,8 +8,14 @@ use App\Http\Controllers\Auth\AuthClientController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EquipeController;
+use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\TacheController;
+use App\Http\Controllers\SousTacheController;
+use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ReponseController;
 use App\Http\Controllers\Affectation\PersoEquipeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +31,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/passforget', [AuthController::class, 'resetNotif']);
 Route::post('/personnelpassReset/{id}', [AuthPersonnelController::class, 'reset']);
 Route::post('/clientpassReset/{id}', [AuthClientController::class, 'reset']);
-
 Route::middleware(['auth:sanctum', 'type.admin'])->group(function () {
     Route::post('/password', [AuthPersonnelController::class, 'changePassword']);
     Route::apiResource('/personnels', PersonnelController::class);
@@ -33,6 +38,11 @@ Route::middleware(['auth:sanctum', 'type.admin'])->group(function () {
     Route::apiResource('/equipes', EquipeController::class);
     Route::post('/persoequipeAdd', [PersoEquipeController::class, 'attachPerso']);
     Route::post('/persoequipeRemove', [PersoEquipeController::class, 'detachPerso']);
+    Route::apiResource('/projets', ProjetController::class);
+    Route::apiResource('/taches', TacheController::class);
+    Route::apiResource('/soustaches', SousTacheController::class);
+    Route::apiResource('/comments', TacheController::class);
+    Route::apiResource('/reponses', ReponseController::class);
     Route::delete('/logout', [AuthController::class, 'logout']);
 });
 

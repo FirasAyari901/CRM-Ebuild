@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\SousTache;
+use App\Models\Personnel;
+use App\Models\commentaire;
+use App\Models\Projet;
+use App\Http\Resources\SousTacheResource;
+use App\Http\Resources\ProjetResource;
+use App\Http\Resources\PersonnelResource;
 use App\Http\Requests\SousTacheRequest;
 
 class SousTacheController extends Controller
@@ -16,7 +22,7 @@ class SousTacheController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'sous-taches' => SousTacheResource::collection(SousTache::all())
+            'soustaches' => SousTacheResource::collection(SousTache::all())
         ]);
     }
 
@@ -40,14 +46,16 @@ class SousTacheController extends Controller
     {
         $sousTache = SousTache::create(([
             'tache_id' => $request->input('tache_id'),
+            'personnel_id' => $request->input('personnel_id'),
             'titre' => $request->input('titre'),
             'deadline' => $request->input('deadline'),
-            'description' => $request->input('description')
+            'description' => $request->input('description'),
+            'etat' => $request->input('etat')
         ]));
 
         return response()->json([
             'status' => 200,
-            'sous-tache' => new SousTacheResource($sousTache)
+            'soustache' => new SousTacheResource($sousTache)
         ]);
     }
 
@@ -57,8 +65,9 @@ class SousTacheController extends Controller
      * @param  \App\Models\SousTache  $sousTache
      * @return \Illuminate\Http\Response
      */
-    public function show(SousTache $sousTache)
+    public function show($id)
     {
+        $sousTache = SousTache::where('id', $id)->first();
         if(!$sousTache) {
             return response()->json([
                 'status' => 401,
@@ -66,12 +75,11 @@ class SousTacheController extends Controller
             ]);
         }
         else {
-            $tache = $sousTache->tache();
-
+            $personnel = $sousTache->personnel;
             return response()->json([
                 'status' => 200,
-                'tache' => $tache,
-                'sous-tache' => new SousTacheResource($sousTache)
+                'soustache' => new SousTacheResource($sousTache),
+                'personnel' => new PersonnelResource($personnel)
             ]);
         }
     }
@@ -90,12 +98,13 @@ class SousTacheController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSousTacheRequest  $request
+     * @param  \App\Http\Requests\SousTacheRequest  $request
      * @param  \App\Models\SousTache  $sousTache
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSousTacheRequest $request, SousTache $sousTache)
+    public function update(SousTacheRequest $request, $id)
     {
+        $sousTache = SousTache::where('id', $id)->first();
         if(!$sousTache) {
             return response()->json([
                 'status' => 401,
@@ -123,8 +132,9 @@ class SousTacheController extends Controller
      * @param  \App\Models\SousTache  $sousTache
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SousTache $sousTache)
+    public function destroy($id)
     {
+        $sousTache = SousTache::where('id', $id)->first();
         if(!$sousTache) {
             return response()->json([
                 'status' => 401,

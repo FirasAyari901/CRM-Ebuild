@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigInteger('tache_id')->unsigned();
             $table->bigInteger('personnel_id')->unsigned();
             $table->string('titre');
-            $table->date('deadline');
+            $table->string('deadline');
             $table->text('description');
             $table->string('etat');
             $table->timestamps();
