@@ -350,6 +350,7 @@
             this.$toastr.i('correct the errors'); 
             return;
           }
+
           axios.post('clients',this.form).then(res =>{
             if (res.data.status == 200){
               this.$toastr.s('customer added ');

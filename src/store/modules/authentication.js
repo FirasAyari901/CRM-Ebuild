@@ -1,10 +1,20 @@
-import { userService } from '../../_services';
+import {
+    userService
+} from '../../_services';
 import router from '../../router/index';
 
 const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: {}, user: null };
+const initialState = user ?
+    {
+        status: {
+            loggedIn: true
+        },
+        user
+    } :
+    {
+        status: {},
+        user: null
+    };
 
 export const authentication = {
     namespaced: true,
@@ -13,8 +23,16 @@ export const authentication = {
 
     },
     actions: {
-        login({ dispatch, commit }, { username, passwordjwt }) {
-            commit('loginRequest', { username });
+        login({
+            dispatch,
+            commit
+        }, {
+            username,
+            passwordjwt
+        }) {
+            commit('loginRequest', {
+                username
+            });
             userService.login(username, passwordjwt)
                 .then(
                     user => {
@@ -23,22 +41,30 @@ export const authentication = {
                     },
                     error => {
                         commit('loginFailure', error);
-                        dispatch('alert/error', error, { root: true });
+                        dispatch('alert/error', error, {
+                            root: true
+                        });
                     }
                 );
         },
-        logout({ commit }) {
+        logout({
+            commit
+        }) {
             userService.logout();
             commit('logout');
         }
     },
     mutations: {
         loginRequest(state, user) {
-            state.status = { loggingIn: true };
+            state.status = {
+                loggingIn: true
+            };
             state.user = user;
         },
         loginSuccess(state, user) {
-            state.status = { loggedIn: true };
+            state.status = {
+                loggedIn: true
+            };
             state.user = user;
         },
         loginFailure(state) {

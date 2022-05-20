@@ -6,6 +6,13 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="col-sm-12 p-0">
+                      <div class="card">
+                    <div class="card-header">
+                      SubTask List
+
+
+                    </div>
+                    <div class="card-body">
                         
                             <div class="row">
                               <div class="col-sm-12 col-xl-6" v-for="(subtask,index) in subtasks" :key="index">
@@ -29,6 +36,8 @@
                               </div>
                           
                             </div>
+                            </div>
+                      </div>
                         </div>
                       
               </div>               

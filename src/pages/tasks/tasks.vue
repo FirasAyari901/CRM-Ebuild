@@ -7,8 +7,14 @@
               <div class="col-md-12">
            
                 <div class="col-sm-12 p-0">
-                        
-                            <div class="row" >
+                  <div class="card">
+                    <div class="card-header">
+                      Task List
+
+
+                    </div>
+                    <div class="card-body">
+    <div class="row" >
                               <div class="col-sm-12 col-xl-6" v-for="(task,index) in tasks" :key="index">
                                 <b-card header-tag="div" header-class="b-l-primary border-3" >
                                   <h5 @click="redirect(task.id)" slot="header">{{task.titre}}</h5>
@@ -26,6 +32,9 @@
                         
 
                             </div>
+                    </div>
+                  </div>
+                        
                         </div>
                       
               </div>               

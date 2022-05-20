@@ -18,7 +18,9 @@
       };
     },
     mounted() {
-      this.timeOut();
+// console.log( 'tokennn',   localStorage.getItem('token')
+// );
+this.timeOut();
     },
     methods:{
       timeOut(){
