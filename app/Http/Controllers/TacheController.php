@@ -6,10 +6,12 @@ use App\Models\Tache;
 use App\Models\Projet;
 use App\Models\Personnel;
 use App\Models\SousTache;
+use App\Models\Commentaire;
 use App\Http\Resources\TacheResource;
 use App\Http\Resources\SousTacheResource;
 use App\Http\Resources\ProjetResource;
 use App\Http\Resources\PersonnelResource;
+use App\Http\Resources\CommentaireResource;
 use App\Http\Requests\TacheRequest;
 
 class TacheController extends Controller
@@ -79,13 +81,18 @@ class TacheController extends Controller
             $projet = $tache->projet;
             $personnel = $tache->personnel;
             $soustaches = $tache->soustaches;
-
+            $commentaires = array();
+            foreach($tache->comments as $comment) {
+                $commentaire = new CommentaireResource($comment);
+                $commentaires [] = $commentaire;
+            }
             return response()->json([
                 'status' => 200,
                 'tache' => new TacheResource($tache),
                 'projet' => new ProjetResource($projet),
                 'personnel' => new PersonnelResource($personnel),
-                'soustaches' => SousTacheResource::collection($soustaches)
+                'soustaches' => SousTacheResource::collection($soustaches),
+                'commentaires' => $commentaires
             ]);
         }
     }

@@ -8,7 +8,7 @@ use App\Models\Client;
 use App\Http\Resources\ReponseResource;
 use App\Http\Resources\TicketResource;
 use App\Http\Resources\ClientResource;
-use App\Http\Requests\StoreReponseRequest;
+use App\Http\Requests\ReponseRequest;
 
 
 class ReponseController extends Controller
@@ -22,7 +22,7 @@ class ReponseController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'reponses' => ReponsesResource::collection(Reponse::all())
+            'reponses' => ReponseResource::collection(Reponse::all())
         ]);
     }
 
@@ -42,10 +42,10 @@ class ReponseController extends Controller
      * @param  \App\Http\Requests\ReponseRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreReponseRequest $request)
+    public function store(ReponseRequest $request)
     {
         $reponse = Reponse::create(([
-            'personnel_id' => Auth::personnel()->id,
+            'personnel_id' => $request->input('personnel_id'),
             'ticket_id' => $request->input('ticket_id'),
             'titre' => $request->input('titre'),
             'description' => $request->input('description'),
@@ -97,11 +97,11 @@ class ReponseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateReponseRequest  $request
+     * @param  \App\Http\Requests\ReponseRequest  $request
      * @param  \App\Models\Reponse  $reponse
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateReponseRequest $request, Reponse $reponse)
+    public function update(ReponseRequest $request, Reponse $reponse)
     {
         if(!$reponse) {
             return response()->json([
@@ -111,7 +111,6 @@ class ReponseController extends Controller
         }
         else {
             $reponse = update(([
-                'client_id' => $request->input('client_id'),
                 'ticket_id' => $request->input('ticket_id'),
                 'titre' => $request->input('titre'),
                 'description' => $request->input('description'),

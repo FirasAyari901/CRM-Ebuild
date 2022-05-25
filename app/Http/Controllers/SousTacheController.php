@@ -9,6 +9,7 @@ use App\Models\Projet;
 use App\Http\Resources\SousTacheResource;
 use App\Http\Resources\ProjetResource;
 use App\Http\Resources\PersonnelResource;
+use App\Http\Resources\CommentaireResource;
 use App\Http\Requests\SousTacheRequest;
 
 class SousTacheController extends Controller
@@ -76,10 +77,16 @@ class SousTacheController extends Controller
         }
         else {
             $personnel = $sousTache->personnel;
+            $commentaires = array();
+            foreach($sousTache->comments as $comment) {
+                $commentaire = new CommentaireResource($comment);
+                $commentaires [] = $commentaire;
+            }
             return response()->json([
                 'status' => 200,
                 'soustache' => new SousTacheResource($sousTache),
-                'personnel' => new PersonnelResource($personnel)
+                'personnel' => new PersonnelResource($personnel),
+                'commentaire' => $commentaires
             ]);
         }
     }

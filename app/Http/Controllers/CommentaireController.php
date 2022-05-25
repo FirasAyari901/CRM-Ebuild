@@ -48,8 +48,8 @@ class CommentaireController extends Controller
     {
         $commentaire = Commentaire::create(([
             'tache_id' => $request->input('tache_id'),
-            'soustache_id' => $request->input('soustache_id'),
-            'personnel_id' => Auth::personnel()->id,
+            'sous_tache_id' => $request->input('sous_tache_id'),
+            'personnel_id' => $request->input('personnel_id'),
             'file' => $request->input('file'),
             'image' => $request->input('image'),
             'description' => $request->input('description')
@@ -70,20 +70,18 @@ class CommentaireController extends Controller
     public function show($id)
     {
         $commentaire = Commentaire::where('id', $id)->first();
-        if(!commentaire) {
+        if(!$commentaire) {
             return response()->json([
                 'status' => 401,
                 'message' => 'The comment data does not exist'
             ]);
         }
         else {
-            $tache = $commentaire->tache;
-            $sousTache = $commentaire->soustache;
+            $personnel = $commentaire->personnel;
             return response()->json([
                 'status' => 200,
-                'tache'  => new TacheResource($tache),
-                'sous-tache' => new SousTacheResource($sousTache),
-                'commentaire' => new CommentaireResource($commentaire)
+                'commentaire' => new CommentaireResource($commentaire),
+                'personnel' => new PersonnelResource($personnel)
             ]);
         }
     }
@@ -118,7 +116,7 @@ class CommentaireController extends Controller
         else {
             $commentaire = update(([
                 'tache_id' => $request->input('tache_id'),
-                'soustache_id' => $request->input('soustache_id'),
+                'sous_tache_id' => $request->input('sous_tache_id'),
                 'personnel_id' => Auth::personnel()->id,
                 'file' => $request->input('file'),
                 'image' => $request->input('image'),
@@ -137,7 +135,7 @@ class CommentaireController extends Controller
      * @param  \App\Models\Commentaire  $commentaire
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Commentaire $commentaire)
+    public function destroy($id)
     {
         $commentaire = Commentaire::where('id', $id)->first();
         if(!$commentaire) {

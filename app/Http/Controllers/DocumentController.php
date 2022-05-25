@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
-use App\Http\Requests\StoreDocumentRequest;
-use App\Http\Requests\UpdateDocumentRequest;
+use App\Models\Operation;
+use App\Http\Resources\DocumentResource;
+use App\Http\Resources\OperationResource;
+use App\Http\Requests\DocumentRequest;
 
 class DocumentController extends Controller
 {
@@ -15,7 +17,10 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'status' => 200,
+            'documents' => DocumentResource::collection(Document::all())
+        ]);
     }
 
     /**
@@ -31,12 +36,33 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDocumentRequest  $request
+     * @param  \App\Http\Requests\DocumentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDocumentRequest $request)
+    public function store(DocumentRequest $request)
     {
-        //
+        $document = Document::create([
+            'client_id' => $request->input('client_id'),
+            'type_doc' => $request->input('type_doc'),
+            'info_supp' => $request->input('info_supp'),
+            'etat' => $request->input('etat')
+        ]);
+        $operations = array();
+        $operations = $request->input('operations');
+        foreach($operations as $op) {
+            $operation = Operation::create([
+                'document_id' => $document->id,
+                'nature_operation' => $op['nature_operation'],
+                'montant_HT' => $op['montant_HT'],
+                'montant_TVA' => $op['montant_TVA']
+            ]);
+        }
+        return response()->json([
+            'status' => 200,
+            'document' => new DocumentResource($document),
+            'operations' => OperationResource::collection($document->operations)
+        ]);
+  
     }
 
     /**
@@ -47,7 +73,17 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        //
+        if(!$document) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'The document data does not exist'
+            ]);
+        }
+        return response()->json([
+            'status' => 200,
+            'document' => new DocumentResource($document),
+            'operations' => OperationResource::collection($document->operations)
+        ]);
     }
 
     /**
@@ -64,13 +100,39 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDocumentRequest  $request
+     * @param  \App\Http\Requests\DocumentRequest  $request
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDocumentRequest $request, Document $document)
+    public function update(DocumentRequest $request, Document $document)
     {
-        //
+        if(!$equipe) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'The document data does not exist'
+            ]);
+        }
+        $document->update([
+            'client_id' => $request->input('client_id'),
+            'type_doc' => $request->input('type_doc'),
+            'info_supp' => $request->input('info_supp'),
+            'etat' => $request->input('etat')
+        ]);
+        $operations = array();
+        $operations = $request->input('operations');
+        foreach($operations as $op) {
+            $operation = Operation::create([
+                'document_id' => $document->id,
+                'nature_operation' => $op->nature_operation,
+                'montant_HT' => $op->montant_HT,
+                'montant_TVA' => $op->montant_TVA
+            ]);
+        }
+        return response()->json([
+            'status' => 200,
+            'document' => new DocumentResource($document),
+            'operations' => OperationResource::collection($document->operations)
+        ]);
     }
 
     /**
@@ -81,6 +143,18 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        //
+        if(!$document) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'The document data does not exist'
+            ]);
+        }
+        else {
+            $document->delete();
+            return response()->json([
+                'status' => 204,
+                'message' => 'Deleted successfully!'
+            ]);
+        }
     }
 }

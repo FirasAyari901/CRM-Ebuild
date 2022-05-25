@@ -14,6 +14,7 @@ use App\Http\Controllers\SousTacheController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ReponseController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\Affectation\PersoEquipeController;
 
 
@@ -31,6 +32,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/passforget', [AuthController::class, 'resetNotif']);
 Route::post('/personnelpassReset/{id}', [AuthPersonnelController::class, 'reset']);
 Route::post('/clientpassReset/{id}', [AuthClientController::class, 'reset']);
+Route::delete('/logout', [AuthController::class, 'logout']);
 Route::middleware(['auth:sanctum', 'type.admin'])->group(function () {
     Route::post('/password', [AuthPersonnelController::class, 'changePassword']);
     Route::apiResource('/personnels', PersonnelController::class);
@@ -41,19 +43,37 @@ Route::middleware(['auth:sanctum', 'type.admin'])->group(function () {
     Route::apiResource('/projets', ProjetController::class);
     Route::apiResource('/taches', TacheController::class);
     Route::apiResource('/soustaches', SousTacheController::class);
-    Route::apiResource('/comments', TacheController::class);
-    Route::apiResource('/reponses', ReponseController::class);
-    Route::delete('/logout', [AuthController::class, 'logout']);
+    Route::get('/allcomments', [CommentaireController::class, 'index']);
+    Route::get('/comment/{id}', [CommentaireController::class, 'show']);
+    Route::get('/allresponses', [ReponseController::class, 'index']);
+    Route::get('/responses/{id}', [ReponseController::class, 'show']);
+    Route::get('/alltickets', [TicketController::class, 'index']);
+    Route::get('/ticket/{id}', [TicketController::class, 'show']);
+    Route::apiResource('/documents', DocumentController::class);
 });
 
 Route::middleware(['auth:sanctum', 'type.personnel'])->group(function () {
     Route::post('/password', [AuthPersonnelController::class, 'changePassword']);
-    Route::delete('/logout', [AuthController::class, 'logout']);
+    Route::get('/projects', [ProjetController::class, 'index']);
+    Route::get('/projects/{projet}', [ProjetController::class, 'show']);
+    Route::get('/tasks', [TacheController::class, 'index']);
+    Route::get('/tasks/{id}', [TacheController::class, 'show']);
+    Route::get('/subtasks', [SousTacheController::class, 'index']);
+    Route::get('/subtasks/{id}', [SousTacheController::class, 'show']);
+    Route::apiResource('/comments', CommentaireController::class);
+    Route::apiResource('/reponses', ReponseController::class);
+    Route::get('/showtickets', [TicketController::class, 'index']);
+    Route::get('/ticketById/{id}', [TicketController::class, 'show']);  
 });
 
 Route::middleware(['auth:sanctum', 'type.client'])->group(function () {
     Route::post('/password', [AuthClientController::class, 'changePassword']);
     Route::apiResource('/tickets', TicketController::class);
-    Route::delete('/logout', [AuthController::class, 'logout']);
+    Route::get('/allprojects', [ProjetController::class, 'index']);
+    Route::get('/project/{projet}', [ProjetController::class, 'show']);
+    Route::get('/getResponses', [ReponseController::class, 'index']);
+    Route::get('/response/{id}', [ReponseController::class, 'show']);
+    Route::get('/alldocuments', [DocumentController::class, 'index']);
+    Route::get('/document/{id}', [DocumentController::class, 'show']);
 });
 

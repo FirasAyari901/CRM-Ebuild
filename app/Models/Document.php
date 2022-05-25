@@ -8,17 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     use HasFactory;
-    
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'client_id',
         'info_supp',
         'type_doc',
-        'montant_ttc',
-        'montant_ht',
-        'etat_doc'
+        'etat',
+        'montant_HT'
     ];
+
+    public function operations()
+    {
+        return $this->hasMany(Operation::class);
+    }
 }

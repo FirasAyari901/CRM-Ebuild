@@ -22,7 +22,7 @@ class TicketController extends Controller
         return response()->json([
             'status' => 200,
             'tickets' => TicketResource::collection(Ticket::all())
-        ]);
+        ]); 
     }
 
     /**

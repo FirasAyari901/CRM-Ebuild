@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('commentaires', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('tache_id')->unsigned()->nullable();
-            $table->bigInteger('soustache_id')->unsigned()->nullable();
+            $table->bigInteger('sous_tache_id')->unsigned()->nullable();
             $table->bigInteger('personnel_id')->unsigned()->nullable();
             $table->text('description');
             $table->binary('image')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('taches')
                 ->onDelete('cascade');
-            $table->foreign('soustache_id')
+            $table->foreign('sous_tache_id')
                 ->references('id')
                 ->on('sous_taches')
                 ->onDelete('cascade');
