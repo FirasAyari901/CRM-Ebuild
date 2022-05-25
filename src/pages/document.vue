@@ -11,58 +11,30 @@
                           <h4 class="mb-0">Documents</h4>
                           </b-col>
                           <b-col xl="3">
-                            <b-button class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.createDocument @click="$bvModal.show('bv-modal-example')" >
+                            <b-button v-if="role != 'client'"  class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.createDocument @click="$bvModal.show('bv-modal-example')" >
                     <i data-feather="plus-square" > </i>Create New Document</b-button>
                     <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="createDocument" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                     <div class="card">
                       <div class="card-header">
-                        <h5>Update document</h5>
+                        <h5>Add document</h5>
                       </div>                
                       <div>
-                        <b-form @submit.stop.prevent="updatee">
-                          <b-form-group id="example-input-group-7" label="Type doc" label-for="example-input-7">
-                            <b-form-select
-                              id="role"
-                              name="example-input-7"
-                              v-model="form.Typedoc"
-                              v-validate="{ required: true }"
-                              :options="roles"
-                              :state="validateState('example-input-7')"
-                              aria-describedby="input-7-live-feedback"
-                              data-vv-as="role">
-                            </b-form-select>
+                        <b-form @submit.stop.prevent="add">
+                          <b-form-group id="example-input-group-7" label="Document type" label-for="example-input-7">
+                             <multiselect  v-model="form.type_doc" :options="roles" label="text" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a document type"></multiselect>
+                        
                             <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
                           </b-form-group>
-                          <b-form-group id="example-input-group-1" label="Amount HT" label-for="example-input-1">
-                            <b-form-input
-                              id="name"
-                              name="example-input-1"
-                              v-model="form.AmountHT"
-                              v-validate="{ required: true,numeric,  }"
-                              :state="validateState('example-input-1')"
-                              aria-describedby="input-1-live-feedback"
-                              data-vv-as="Name">
-                            </b-form-input>
-                            <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
-                          </b-form-group> 
+                         
                           <b-form-group id="example-input-group-7" label="Customer" label-for="example-input-7">
-                            <b-form-select
-                             
-                              name="example-input-7"
-                              v-model="form.Customer"
-                              v-validate="{ required: true }"
-                              :options="customer"
-                              :state="validateState('example-input-7')"
-                              aria-describedby="input-7-live-feedback"
-                              data-vv-as="role">
-                            </b-form-select>
+                           <multiselect  v-model="form.client_id" :options="customers" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a customer"></multiselect>
                             <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
                           </b-form-group>    
                           <b-form-group id="example-input-group-2" label="Etat doc " label-for="example-input-2">
                             <b-form-input
                               id="num_tel"
                               name="example-input-2"
-                              v-model="form.Etatdoc"
+                              v-model="form.etat"
                               v-validate="{ required: true  }"
                               :state="validateState('example-input-2')"
                               aria-describedby="input-2-live-feedback"
@@ -70,23 +42,12 @@
                             </b-form-input>
                             <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                           </b-form-group>
-                          <b-form-group id="example-input-group-2" label="Description " label-for="example-input-2">
-                            <b-form-input
-                              id="num_tel"
-                              name="example-input-2"
-                              v-model="form.description"
-                              v-validate="{ required: true  }"
-                              :state="validateState('example-input-2')"
-                              aria-describedby="input-2-live-feedback"
-                              data-vv-as="num_tel">
-                            </b-form-input>
-                            <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
-                          </b-form-group>
+                          
                           <b-form-group id="example-input-group-3" label="Info supp" label-for="example-input-3">
                             <b-form-input
                               id="email"
                               name="example-input-3"
-                              v-model="form.Infosupp"
+                              v-model="form.info_supp"
                               v-validate="{ required: true,  }"
                               :state="validateState('example-input-3')"
                               aria-describedby="input-3-live-feedback"
@@ -103,7 +64,7 @@
                             <b-form-input
                           
                               name="example-input-3"
-                              v-model="operation.nature"
+                              v-model="operation.nature_operation"
                               v-validate="{ required: true,  }"
                               :state="validateState('example-input-3')"
                               aria-describedby="input-3-live-feedback"
@@ -117,7 +78,7 @@
                             <b-form-input
                               id="name"
                               name="example-input-1"
-                              v-model="operation.AmountHT"
+                              v-model="operation.montant_HT"
                               v-validate="{ required: true,numeric,  }"
                               :state="validateState('example-input-1')"
                               aria-describedby="input-1-live-feedback"
@@ -131,7 +92,7 @@
                             <b-form-input
                               id="name"
                               name="example-input-1"
-                              v-model="operation.AmountTVA"
+                              v-model="operation.montant_TVA"
                               v-validate="{ required: true,numeric,  }"
                               :state="validateState('example-input-1')"
                               aria-describedby="input-1-live-feedback"
@@ -167,9 +128,7 @@
                   <div slot="with-padding">
                     <div class="row">
                      
-                      
-                   
-                      <div class="col-xl-4 col-md-6 box-col-6">
+                      <div class="col-xl-4 col-md-6 box-col-6" v-for="(document,index) in documents" :key="index">
                         <div class="prooduct-details-box">                                 
                           <div class="media">
                             <div class="media-body ml-3">
@@ -177,69 +136,31 @@
                                 
                               </div>
                               <div class="product-name">
-                              <span class="badge badge-primary">comfirmed</span>
+                              <span class="badge badge-primary">{{ document.attributes.etat }}</span>
                               </div>
                               <br>
                               <div class="avaiabilty">
-                                <div class="text-success">20/04/2022</div>
-                            </div>
-                             <div class="avaiabilty ">
-                                <div class="text-primary">tucal</div>
-                            </div>
-                            <div class="avaiabilty ">
-                                <div class="text-success">document type : appraisal</div>
-                            </div>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-                              </div>
-                              <br>
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">price HT</div>: 1020 TND
-                              </div>
-                              
-                              <br>                               
-                              <div class="avaiabilty">
-                              <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                     
-                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-4 col-md-6 box-col-6">
-                        <div class="prooduct-details-box">                                 
-                          <div class="media">
-                            <div class="media-body ml-3">
-                              <div class="product-name">
-                                
-                              </div>
-                              <div class="product-name">
-                              <span class="badge badge-primary">confirmed</span>
-                              </div>
-                              <br>
-                              <div class="avaiabilty">
-                                <div class="text-success">20/04/2022</div>
+                                <div class="text-success">{{ document.attributes.created_at.substr(0, 10) }}</div>
                             </div>
                              <div class="avaiabilty ">
                                 <div class="text-primary">customer 1</div>
                             </div>
                             <div class="avaiabilty ">
-                                <div class="text-success">document type : appraisal</div>
+                                <div class="text-success">document type : {{ document.type_doc }}</div>
                             </div>
                               <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
+                                <div class="text-muted mr-2">{{ document.attributes.info_supp }} </div>
                               </div>
                               <br>
                               <div class="price d-flex"> 
-                                <div class="text-muted mr-2">price HT</div>: 3000 TND
+                                <div class="text-muted mr-2">price HT</div>: {{ document.attributes.montant_HT }} TND
                               </div>
                               
                               <br>                               
                               <div class="avaiabilty">
-                              <feather  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                              <feather v-if="role != 'client'"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
                                      
-                                 <feather style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                 <feather v-if="role != 'client'" style="margin-left:3px;" type="trash-2" stroke="red" @click="deleteee(document.id)" ></feather>
                               </div>
                             </div>
                           </div>
@@ -257,33 +178,163 @@
             </div>
           </div>
       <!-- Container-fluid Ends-->
+     <div id="pdf" >
+       <div class="row">
+         <div class="col-8"> 
+              <img
+                  class="img-fluid"
+                  src="../assets/images/logo/logoebuild.png"
+                  alt=""
+                
+              />
+         </div>
+         <div class="col-2">
+
+         </div>
+         <div class="col-2">
+           <h1 style="color:red">FACTURE
+           </h1>
+           <h3>N 025</h3>
+         </div>
+       </div>
+       <br><br><br><br><br><br><br><br>
+       <div class="row">
+         <div class="col-6" style="border-left: 1px solid #cecece;border-bottom: 1px solid #cecece;border-right: 1px solid #cecece;border-top: 5px solid red;">
+          <h3>CLIENT</h3>
+          <h4>{{ client }}</h4>
+         </div>
+         <div class="col-2">
+
+         </div>
+         <div class="col-4" style="border-left: 1px solid #cecece;border-bottom: 1px solid #cecece;border-right: 1px solid #cecece;border-top: 5px solid red;">
+          {{ date }}
+         </div>
+       </div> 
+       <br><br><br><br><br><br>
+
+      <b-table-simple style="border-top: 5px solid red;">
+       <b-thead >
+
+      <b-tr variant="danger">
+        <b-th>Reference</b-th>
+          <b-th>Description</b-th>
+          <b-th>PU HT</b-th>
+          <b-th>TVA</b-th>
+          <b-th>Total HT</b-th>
+      </b-tr>
+    </b-thead>
+    <b-tbody>
+      <b-tr :key="index" v-for="(operation, index) in submittedOperations">
+        <b-td>QFDV</b-td>
+        <b-td>IHNJINNU</b-td>
+        <b-td></b-td>
+        <b-td>19%</b-td>
+        <b-td>J99UJ</b-td>
+      </b-tr>
+    </b-tbody>
+    
+  </b-table-simple>
+  <br><br><br><br><br><br>
+  <div class="row">
+         <div class="col-3">
+
+         </div>
+          <div class="col-4" >
+       <b-table-simple style="border-top: 5px solid red;">
+       <b-thead >
+
+      <b-tr variant="danger">
+        <b-th>TVA</b-th>
+          <b-th>Base</b-th>
+          <b-th>Montant</b-th>
+      </b-tr>
+    </b-thead>
+    <b-tbody>
+      <b-tr>
+        <b-td>22</b-td>
+        <b-td>43</b-td>
+        <b-td>56</b-td>
+      </b-tr>
+    </b-tbody>
+    
+  </b-table-simple>
+         </div>
+         <div class="col-1">
+
+         </div>
+         <div class="col-4" >
+           <b-table-simple style="border-top: 5px solid red;">
+      
+    <b-tbody>
+      <b-tr>
+        <b-td>22</b-td>
+      </b-tr>
+      <b-tr>
+        <b-td>22</b-td>
+      </b-tr>
+      <b-tr>
+        <b-td>22</b-td>
+      </b-tr>
+      <b-tr>
+        <b-td>22</b-td>
+      </b-tr>
+    </b-tbody>
+    
+  </b-table-simple>
+         </div>
+  </div> 
+        <ul>
+          <h5 class="text-center">Réglement de Paiement :<br/></h5> 
+          <li class="text-center"><h5>Avance de 20% du Montant Total TTC à la Commande</h5></li>
+          <li class="text-center"><h5>Reste de la facture à la livraison<br/>Offre gratuite :</h5></li>
+          <li class="text-center"><h5>Maintenance site 12 mois</h5></li>
+          <li class="text-center"><h5>Formation back office</h5></li>
+          <li class="text-center"><h5>maintenance serveur et déploiement</h5></li>
+        </ul>
+        <br/>
+        <hr class="hr"/>
+     </div>
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex';
-  
+   import Multiselect from 'vue-multiselect';
+   import VueHtml2pdf from 'vue-html2pdf'
+ import axios from 'axios'; 
+
   export default {
+    components: {
+      Multiselect,
+      VueHtml2pdf
+    },
     data(){
       return {
+       
         roles: [
          { value: 'appraisal', text: 'appraisal' },
           { value: 'bills', text: 'bills' }
         ],
-        customer: [
-         { value: 'customer 1', text: 'customer 1' },
-          { value: 'tucal', text: 'tucal' }
+        customers: [
+         
         ],
+        client:null,
+        date:null,
+        documents:[],
+        submittedDoc:null,
+        submittedOperations:null,
         form: {
-          Typedoc:'',
-          AmountHT:'',
-          Etatdoc:'',
-          Infosupp:'',
-          operations:[ {
-          nature:'',
-          AmountHT:'',
-          AmountTVA:'',
-        }],
+          type_doc:'',
+          etat:'',
+          info_supp:'',
+          client_id :'',
+          operations:[
+             {
+              nature_operation:'',
+              montant_HT:'',
+              montant_TVA:'',
+             }
+        ],
         },
         
       };
@@ -293,13 +344,48 @@
         orederhistory: state => state.common.orederhistory
       })
     },
+    created(){
+      
+     if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+     if(this.role == 'admin'){
+       axios.get('clients').then((response)=>{
+         console.log(response.data.clients)
+        this.customers=response.data.clients
+        
+      }) 
+      axios.get('documents').then((response)=>{
+         console.log(response.data.documents)
+        this.documents=response.data.documents
+      }) 
+      
+}
+if(this.role == 'client'){
+   axios.get('alldocuments').then((response)=>{
+         console.log(response.data.documents)
+        this.documents=response.data.documents
+      }) 
+      this.documents.forEach(document => {
+        document.attributes.created_at = document.attributes.created_at.substr(1, 4)
+      });
+}
+const datee = new Date(Date.now())
+      this.date = datee.toLocalString()
+    },
     methods:{
       addForm(){
         this.form.operations.push({
-          nature:'',
-          AmountHT:'',
-          AmountTVA:'',
-        })
+              nature_operation:'',
+              montant_HT:'',
+              montant_TVA:'',
+             })
       },
       validateState(ref) {
         if (
@@ -310,19 +396,43 @@
         }
         return null;
       },  
-      updatee() {
+      add() {
+        
+        this.client = this.form.client_id.name
+        this.form.client_id = this.form.client_id.id
+        this.form.type_doc = this.form.type_doc.text
+        console.log(JSON.stringify(this.form));
         this.$validator.validateAll().then(result => {
           if (!result) {
             this.$toastr.i('correct the errors'); 
             return;
           }
-          console.log(this.form)
+          axios.post('documents',this.form).then(res =>{
+            console.log(res.data);
+           
+              this.submittedDoc = res.data.document
+              this.submittedOperations = res.data.operations
+              const pdf = document.getElementById('pdf').innerHTML
+              const originalContent = window.document.body.innerHTML;
+              window.document.body.innerHTML = pdf;
+              window.print();
+              window.document.body.innerHTML = originalContent;
+      
+          });
           return;
         });
       },
-      getImgUrl(path) {
-        return require('@/assets/images/'+path);
-      },
+      deleteee(id) {
+      axios.delete('documents/'+id).then(res =>{
+              this.$toastr.s('Document deleted ! ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
+
+    },
     }
   };
 </script>

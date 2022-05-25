@@ -22,8 +22,8 @@
                                   <br>
                                   <b-card-text class="mb-0">{{ subtask.attributes.description }}</b-card-text>
                                   </div>
-                                  <feather   type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                <feather @click="deleteee(subtask.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                  <feather v-if="role == 'admin'"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                <feather v-if="role == 'admin'" @click="deleteee(subtask.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 
                                 </b-card>
                               </div>
@@ -132,9 +132,26 @@
 
       }},
     created() {
-      axios.get('soustaches').then(res =>{
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      if(this.role == 'admin'){
+        axios.get('soustaches').then(res =>{
              this.subtasks = res.data.soustaches
           });
+       }
+       if(this.role == 'other'){
+          axios.get('subtasks').then(res =>{
+             this.subtasks = res.data.soustaches
+          });
+       }
+      
     },
     methods:{
      onSubmit() {

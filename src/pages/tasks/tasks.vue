@@ -18,8 +18,8 @@
                                   </div>
                                   <br>
                                   <b-card-text class="mb-0">{{task.attributes.description}}</b-card-text><br><br>
-                                  <feather   type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                <feather @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                  <feather  v-if="role == 'admin'" type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                <feather v-if="role == 'admin'" @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </b-card>
 
                               </div>
@@ -70,9 +70,26 @@
 
       }},
     created() {
-      axios.get('taches').then(res =>{
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      if(this.role == 'admin'){
+       axios.get('taches').then(res =>{
              this.tasks = res.data.taches
           });
+       }
+       if(this.role == 'other'){
+         axios.get('tasks').then(res =>{
+             this.tasks = res.data.taches
+          }); 
+       }
+      
     },
     methods:{
      onSubmit() {

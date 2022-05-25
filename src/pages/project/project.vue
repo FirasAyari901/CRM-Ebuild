@@ -12,7 +12,7 @@
                       <div class="row">
                         <div class="col-10"><h2>{{project.project_name}}</h2></div>
                         <div class="col-2">
-                          <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add task</b-button>
+                          <b-button v-if="role == 'admin'" id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add task</b-button>
                         </div>
                       </div>
 
@@ -40,8 +40,8 @@
                                   </div>
                                   <br>
                                   <b-card-text class="mb-0">{{task.attributes.description}}</b-card-text><br><br>
-                                  <feather   type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                <feather @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                  <feather v-if="role == 'admin'"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                <feather v-if="role == 'admin'" @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </b-card>
 
                               </div>
@@ -99,6 +99,11 @@
      
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
+                              <b-form-group id="example-input-group-2" label="Staff" label-for="example-input-2">
+                                  <multiselect  v-model="form.personnel_id" :options="staff" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
+     
+                                <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
+                              </b-form-group>
 
                               <b-button type="submit" variant="primary">Submit</b-button>
                               <b-button class="ml-2" @click="resetForm()">Reset</b-button>
@@ -127,7 +132,7 @@
         description: '',
         titre: '',
         projet_id:parseInt(this.id, 10),
-        personnel_id:2
+        personnel_id:null
        
        
       },
@@ -139,20 +144,44 @@
           { code: 5, name: 'Closed' }
         ],
         limitMultiValue:[],
+        staff:[],
        project :null,
-       tasks :null
-
+       tasks :null,
+       role:null
       }},
     created() {
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      if(this.role == 'admin'){
       axios.get('projets/'+String(this.id)).then(res =>{
              this.project = res.data.projet
              this.tasks = res.data.taches
              console.log(res.data.taches);
-          });
+          })
+      axios.get('personnels').then((response)=>{
+        this.staff=response.data.staff;
+      });   
+       }
+       if(this.role == 'other'){
+         axios.get('projects/'+String(this.id)).then(res =>{
+             this.project = res.data.projet
+             this.tasks = res.data.taches
+             console.log(res.data.taches);
+          })
+       }
+      ;
     },
     methods:{
      onSubmit() {
         this.form.etat = this.form.etat.name
+        this.form.personnel_id = this.form.personnel_id.id
         this.$validator.validateAll().then(result => {
           if (!result) {
             this.$toastr.i('correct the errors'); 

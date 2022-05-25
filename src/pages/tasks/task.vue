@@ -12,12 +12,18 @@
                       <div class="row">
                         <div class="col-10"><h2>{{task.titre}}</h2></div>
                         <div class="col-2">
+                          <b-button v-if="role == 'admin'" class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg @click="$bvModal.show('bv-modal-example')" >
+                          <i data-feather="plus-square" > </i>Create Subask</b-button>  
                         </div>
                       </div>
 
                       <span class="badge badge-primary" >{{task.attributes.etat}}</span>
+                      <br><br>
+                      <div class="avaiabilty">
+                        <img class="img-30 img-fluid m-r-20 rounded-circle" :src="staff.image " alt="staff.name">
+                        <span>{{staff.name}}</span>
+                      </div>
                       <br>
-   
                       <div class="avaiabilty">
                           <div class="text-success">Deadline : {{task.attributes.deadline}}</div>
                       </div>
@@ -42,39 +48,40 @@
                                   <br>
                                   <b-card-text class="mb-0">{{ subtask.attributes.description }}</b-card-text>
                                   </div>
-                            
+                                  <feather  v-if="role == 'admin'" type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                <feather v-if="role == 'admin'" @click="deleteee(subtask.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </b-card>
                               </div>
                           
                             </div>
                  </div>
                  <div class="col-sm-12 p-0">
-                    <div class="row">
+                    <div class="row"> 
                       <div class="col-sm-12">
                         <div class="card">
 											<div class="card-body">
 												<div class="timeline-content">
 												<div class="social-chat">
 														
-                            <div class="your-msg ">
-															<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="../../assets/images/logo/ala.jpg">
-																<div class="media-body shadow-sm shadow-showcase"><span class="f-w-600">Ala gtari </span>
-																	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis dignissimos culpa molestias consectetur quisquam pariatur, quidem perferendis quod impedit, doloremque assumenda animi sit voluptatem corrupti corporis, accusantium sed porro vero?</p>
-															<feather   type="edit" stroke="#ffcd01" v-b-modal.add ></feather> 
-                                <feather  style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                            <div class="your-msg " v-for="(comment,index) in comments" :key="index" >
+															<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" :src="staff.image">
+																<div class="media-body shadow-sm shadow-showcase"><span class="f-w-600">{{staff.name}} </span>
+																	<p>{{ comment.description }}</p>
+															<feather  v-if="access" type="edit" stroke="#ffcd01" v-b-modal.add ></feather> 
+                                <feather @click="deleteCmnt(comment.id)" v-if="access" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                               	</div>
 															</div>
 														</div>
                     
 								
 													</div>
-													<div class="comments-box">
-														<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="../../assets/images/logo/ala.jpg">
+													<div class="comments-box" v-if="access">
+														<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" :src="staff.image">
 															<div class="media-body shadow-sm shadow-showcase">
 																<div class="input-group text-box">
-																	<input class="form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+																	<input class="form-control input-txt-bx" v-model="cmnt.description" type="text" name="message-to-send" placeholder="Post Your commnets">
 																	<div class="input-group-append">
-																		<button class="btn btn-transparent" type="button"><i class="fa fa-paper-plane-o   ">  </i></button>
+																		<button @click="addCmnt" class="btn btn-transparent" type="button"><i class="fa fa-paper-plane-o   ">  </i></button>
 																	</div>
 																</div>
 															</div>
@@ -93,12 +100,12 @@
         <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
                              <div class="card">
                         <div class="card-header">
-                            <h5>Add task</h5>
+                            <h5>Add subtask</h5>
                         </div>
                 
                           <div>
                             <b-form @submit.stop.prevent="onSubmit">
-                              <b-form-group id="example-input-group-1" label="Task title" label-for="example-input-1">
+                              <b-form-group id="example-input-group-1" label="Subask title" label-for="example-input-1">
                                 <b-form-input
                                   id="example-input-1"
                                   name="example-input-1"
@@ -217,9 +224,14 @@
         description: '',
         titre: '',
         tache_id:parseInt(this.id, 10),
-        personnel_id:2
+        personnel_id:''
        
        
+      },
+       cmnt: {
+        description: '',
+        tache_id:parseInt(this.id, 10),
+        personnel_id:''
       },
       options: [
           { code: 1, name: 'Open' },
@@ -229,27 +241,68 @@
           { code: 5, name: 'Closed' }
         ],
         limitMultiValue:[],
+        staff:null,
        task :null,
-       subtasks :null
+       subtasks :null,
+       comments:[],
+       access : null
 
       }},
     created() {
-      axios.get('taches/'+String(this.id)).then(res =>{
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      const user = JSON.parse(localStorage.getItem('personnel'))
+     
+      if(this.role == 'admin'){
+       axios.get('taches/'+String(this.id)).then(res =>{
+         console.log(res.data.tache);
+             this.task = res.data.tache
+             this.staff = res.data.personnel
+             this.subtasks = res.data.soustaches
+             this.comments = res.data.commentaires
+              if (user.id == res.data.personnel.id) {
+              this.access = true
+            } else {
+              this.access = false
+            }
+       
+          });
+       }
+       if(this.role == 'other'){
+          axios.get('tasks/'+String(this.id)).then(res =>{
              this.task = res.data.tache
              this.subtasks = res.data.soustaches
+             this.staff = res.data.personnel
+             this.comments = res.data.commentaires
+              if (user.id == res.data.personnel.id) {
+              this.access = true
+            } else {
+              this.access = false
+            }
+       
           });
+       }
+      
     },
     methods:{
      onSubmit() {
         this.form.etat = this.form.etat.name
-        this.$validator.validateAll().then(result => {
+        this.form.personnel_id = this.staff.id
+         this.$validator.validateAll().then(result => {
           if (!result) {
             this.$toastr.i('correct the errors'); 
             return;
           }
           axios.post('soustaches',this.form).then(res =>{
             if (res.data.status == 200){
-              this.$toastr.s('Task added ');
+              this.$toastr.s('Subtask added ');
               setTimeout(() => {
                 location.reload();
               }, '500');
@@ -261,9 +314,36 @@
        
 
     },
+    addCmnt() {
+         const user = JSON.parse(localStorage.getItem('personnel'))
+        this.cmnt.personnel_id = user.id
+        console.log(this.cmnt);
+          axios.post('comments',this.cmnt).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('Comment added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            }
+          
+         
+        });
+       
+
+    },
     deleteee(id) {
  axios.delete('soustaches/'+id).then(res =>{
-              this.$toastr.s('project deleted ! ');
+              this.$toastr.s('Subtask deleted ! ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
+
+    },deleteCmnt(id) {
+ axios.delete('comments/'+id).then(res =>{
+              this.$toastr.s('Comment deleted ! ');
               setTimeout(() => {
                 location.reload();
               }, '500');

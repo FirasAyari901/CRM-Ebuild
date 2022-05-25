@@ -11,7 +11,7 @@
                           <h4 class="mb-0">Tickets</h4>
                           </b-col>
                         <b-col xl="2">
-                         <b-button id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add Ticket</b-button>
+                         <b-button v-if="role == 'client'" id="default-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg variant="secondary">Add Ticket</b-button>
                         </b-col>
                       </b-row>
 
@@ -26,61 +26,27 @@
                 <px-card title="" :actions="false">
                   <div slot="with-padding">
                     <div class="row">
-                      <div class="col-xl-4 col-md-6 box-col-6">
+                      <div class="col-xl-4 col-md-6 box-col-6" v-for="(ticket,index) in tickets" :key="index">
                         <div class="prooduct-details-box">                                 
                           <div class="media">
                             <div class="media-body ml-3">
                               <div class="product-name">
-                                <h6><a href="#">Ticket 1</a></h6>
+                                <h6><a href="#">{{ ticket.title }}</a></h6>
                               </div>
-                              
                               <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</div>
+                              </div>
+                              <div class="price d-flex"> 
+                                <div class="text-muted mr-2">{{ ticket.attributes.description }}</div>
                               </div>
                                 <br><br>                             
                               <div class="avaiabilty">
-                              </div><a class="btn btn-warning btn-xs" href="#">Update</a><feather class="close"  type="trash-2"></feather>
+                              </div><a v-if="role == 'client'" class="btn btn-warning btn-xs" href="#">Update</a><feather v-if="role == 'client'" class="close" @click="deleteee(ticket.id)"  type="trash-2"></feather>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-xl-4 col-md-6 box-col-6">
-                        <div class="prooduct-details-box">                                 
-                          <div class="media">
-                            <div class="media-body ml-3">
-                              <div class="product-name">
-                                <h6><a href="#">Ticket 1</a></h6>
-                              </div>
-                              
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</div>
-                              </div>
-                                <br><br>                             
-                              <div class="avaiabilty">
-                              </div><a class="btn btn-warning btn-xs" href="#">Update</a><feather class="close"  type="trash-2"></feather>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xl-4 col-md-6 box-col-6">
-                        <div class="prooduct-details-box">                                 
-                          <div class="media">
-                            <div class="media-body ml-3">
-                              <div class="product-name">
-                                <h6><a href="#">Ticket 1</a></h6>
-                              </div>
-                              
-                              <div class="price d-flex"> 
-                                <div class="text-muted mr-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</div>
-                              </div>
-                                <br><br>                             
-                              <div class="avaiabilty">
-                              </div><a class="btn btn-warning btn-xs" href="#">Update</a><feather class="close"  type="trash-2"></feather>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                
+                      
+           
 
                       
                     </div>
@@ -98,7 +64,7 @@
                         </div>
                 
                           <div>
-                            <b-form @submit.stop.prevent="onSubmit">
+                            <b-form @submit.stop.prevent="add">
                               <b-form-group id="example-input-group-1" label="title" label-for="example-input-1">
                                 <b-form-input
                                   id="example-input-1"
@@ -124,6 +90,7 @@
                           </b-form-group>
                           <b-form-group id="example-input-group-5" label="file" label-for="example-input-5">
                             <b-form-file
+                            @change="file"
                               id="example-input-5"
                               name="example-input-5"
                               v-model="form.file"
@@ -135,7 +102,7 @@
                             <b-form-invalid-feedback id="input-5-live-feedback">{{ veeErrors.first('example-input-5') }}</b-form-invalid-feedback>
                           </b-form-group>
                             <b-form-group id="example-input-group-2" label="Project" label-for="example-input-2">
-                                  <multiselect  v-model="form.ticket" :options="options" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
+                                  <multiselect  v-model="form.projet_id" :options="projects" label="project_name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
                                 <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
                               </b-form-group>
                               <b-button type="submit" variant="primary">Submit</b-button>
@@ -150,6 +117,7 @@
 <script>
   import { mapState } from 'vuex';
      import Multiselect from 'vue-multiselect';
+ import axios from 'axios'; 
 
   export default {
     components: {
@@ -157,14 +125,15 @@
     },
     data(){
       return {
-         options: [
-          { code: 1, name: 'Scanini' },
+        tickets:[],
+         projects: [
         ],
           form: {
-          file:'',
-          image:'',
+          projet_id:'',
+          client_id:'',
           description:'',
-          ticket:'Ticket 1'
+          titre:'',
+          file:'',
 
         },
       };
@@ -174,8 +143,66 @@
         orederhistory: state => state.common.orederhistory
       })
     },
+    created(){
+     if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+if(this.role == 'client'){
+      axios.get('tickets').then((response)=>{
+         console.log(response.data.tickets)
+        this.tickets=response.data.tickets
+      }) 
+      axios.get('allprojects').then((response)=>{
+         console.log(response.data.projets)
+        this.projects=response.data.projets
+      }) 
+}
+if(this.role == 'other'){
+   axios.get('showtickets').then((response)=>{
+         console.log(response.data.tickets)
+        this.tickets=response.data.tickets
+      }) 
+}
+    }
+    ,
     methods:{
-      add() {},
+      file(event) {
+        let reader = new FileReader();
+        reader.onload = (event) => {
+          this.form.file = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        
+      },
+      add() {
+        const user = JSON.parse(localStorage.getItem('client'))
+        this.form.client_id = user.id
+        this.form.projet_id = this.form.projet_id.id 
+        console.log(this.form);
+         this.$validator.validateAll().then(result => {
+          if (!result) {
+            this.$toastr.i('correct the errors'); 
+            return;
+          }
+          axios.post('tickets',this.form).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('ticket added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            } else{
+            }
+          });
+          return;
+        });
+     
+      },
  validateState(ref) {
         if (
           this.veeFields[ref] &&
@@ -185,9 +212,17 @@
         }
         return null;
       },
-      getImgUrl(path) {
-        return require('@/assets/images/'+path);
-      },
+      deleteee(id) {
+      axios.delete('tickets/'+id).then(res =>{
+              this.$toastr.s('Ticket deleted ! ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
+
+    },
     }
   };
 </script>

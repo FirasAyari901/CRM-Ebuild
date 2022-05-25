@@ -256,7 +256,7 @@
       }
     },
     created() {
-      localStorage
+      
       if (localStorage.getItem("role")) {
         if (localStorage.getItem("role") === "admin") {
           this.role = "admin"

@@ -139,20 +139,26 @@
         this.submitted = true;
         if (this.password !=''  && this.email != '') {
           const data = { password: this.password,  email: this.email, };
-          console.log(data);
+          
           const response = await axios.post('login',data);
           console.log(response.data);
           if (response.data.status == 200){
             localStorage.setItem('token',response.data.token);
             if(response.data.client){
               localStorage.setItem('client',JSON.stringify(response.data.client));
+              this.$router.push('/app/tickets'); 
             }
             if(response.data.personnel){
+              if (response.data.personnel.role == "admin") {
+                this.$router.push('/app/customers'); 
+              }
+              else{
+                  this.$router.push('/app/tickets'); 
+              }
               localStorage.setItem('role',response.data.personnel.role);
               localStorage.setItem('personnel',JSON.stringify(response.data.personnel));
         
             }
-            this.$router.push('/app/customers');  
             this.$toastr.s('welcome '+response.data.personnel.name);
           
           } else{

@@ -15,8 +15,12 @@
                       </div>
 
                       <span class="badge badge-primary" >{{subtask.attributes.etat}}</span>
+                      <br><br>
+                      <div class="avaiabilty">
+                        <img class="img-30 img-fluid m-r-20 rounded-circle" :src="staff.image " alt="staff.name">
+                        <span>{{staff.name}}</span>
+                      </div>
                       <br>
-   
                       <div class="avaiabilty">
                           <div class="text-success">Deadline : {{subtask.attributes.deadline}}</div>
                       </div>
@@ -32,24 +36,24 @@
 												<div class="timeline-content">
 												<div class="social-chat">
 														
-                            <div class="your-msg ">
-															<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="../../assets/images/logo/ala.jpg">
-																<div class="media-body shadow-sm shadow-showcase"><span class="f-w-600">Ala gtari </span>
-																	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis qui repellendus exercitationem harum expedita? Debitis doloribus neque accusantium consequuntur quas similique cum, unde temporibus nesciunt autem numquam. Quia, itaque dolorem.</p>
-                                  <feather   type="edit" stroke="#ffcd01" v-b-modal.add ></feather> 
-                                <feather  style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                            <div class="your-msg " v-for="(comment,index) in comments" :key="index">
+															<div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" :src="staff.image ">
+																<div class="media-body shadow-sm shadow-showcase"><span class="f-w-600">{{ staff.name }} </span>
+																	<p>{{ comment.description }}</p>
+                                  <feather v-if="access"  type="edit" stroke="#ffcd01" v-b-modal.add ></feather> 
+                                <feather v-if="access" @click="deleteCmnt(comment.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
 																</div>
 															</div>
 														</div>
                     
 								
 													</div>
-													<div class="comments-box">
-                             <div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" src="../../assets/images/logo/ala.jpg">															<div class="media-body shadow-sm shadow-showcase">
+													<div class="comments-box" v-if="access">
+                             <div class="media"><img class="img-50 img-fluid m-r-20 rounded-circle" alt="" :src="staff.image ">															<div class="media-body shadow-sm shadow-showcase">
 																<div class="input-group text-box">
-																	<input class="form-control input-txt-bx" type="text" name="message-to-send" placeholder="Post Your commnets">
+																	<input class="form-control input-txt-bx" v-model="cmnt.description" type="text" name="message-to-send" placeholder="Post Your commnets">
 																	<div class="input-group-append">
-																		<button class="btn btn-transparent" type="button"><i class="fa fa-paper-plane-o   ">  </i></button>
+																		<button @click="addCmnt" class="btn btn-transparent" type="button"><i class="fa fa-paper-plane-o   ">  </i></button>
 																	</div>
 																</div>
 															</div>
@@ -127,22 +131,57 @@
       Multiselect,
     },
     data(){
-      return {
+      return { 
         form: {
           file:'',
           image:'',
           description:'',
 
         },
+        cmnt: {
+        description: '',
+        sous_tache_id:parseInt(this.id, 10),
+        personnel_id:''
+      },
        subtask:null,
        staff:null,
       }},
     created() {
-      axios.get('soustaches/'+String(this.id)).then(res =>{
-             
+      const user = JSON.parse(localStorage.getItem('personnel'))
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
+      if(this.role == 'admin'){
+       axios.get('soustaches/'+String(this.id)).then(res =>{
              this.subtask = res.data.soustache
              this.staff = res.data.personnel
+             this.comments = res.data.commentaire
+             if (user.id == res.data.personnel.id) {
+              this.access = true
+            } else {
+              this.access = false
+            }
           });
+       }
+       if(this.role == 'other'){
+          axios.get('subtasks/'+String(this.id)).then(res =>{
+             this.subtask = res.data.soustache
+             this.staff = res.data.personnel
+             this.comments = res.data.commentaire
+             if (user.id == res.data.personnel.id) {
+              this.access = true
+            } else {
+              this.access = false
+            }
+          });
+       }
+     
     },
     methods:{
 add() {},
@@ -155,6 +194,35 @@ add() {},
         }
         return null;
       },
+      addCmnt() {
+         const user = JSON.parse(localStorage.getItem('personnel'))
+        this.cmnt.personnel_id = user.id
+        
+        console.log(this.cmnt);
+          axios.post('comments',this.cmnt).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('Comment added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            }
+          
+         
+        });
+       
+
+    },
+    deleteCmnt(id) {
+ axios.delete('comments/'+id).then(res =>{
+              this.$toastr.s('Comment deleted ! ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+           
+          });
+       
+
+    },
       
     }
   };

@@ -11,7 +11,7 @@
                           <h4 class="mb-0">Projects</h4>
                           </b-col>
                         <b-col xl="2">
-                          <b-button class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg @click="$bvModal.show('bv-modal-example')" >
+                          <b-button v-if="role == 'admin'" class="btn btn-secondary" lass="mb-0 datatable-select" v-b-modal.modal-lg @click="$bvModal.show('bv-modal-example')" >
                           <i data-feather="plus-square" > </i>Create New Project</b-button>                        </b-col>
                           </b-row>
                           <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-lg" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
@@ -239,8 +239,8 @@
                                         <div class="col-6 text-primary" >{{ project.attributes.deadline }}</div>
                                       </div>
                                     </div>
-                                    <feather @click="recuperer(project.id)"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
-                                 <feather @click="deleteee(project.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
+                                    <feather v-if="role == 'admin'" @click="recuperer(project.id)"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                 <feather v-if="role == 'admin'" @click="deleteee(project.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </div>
                               </div>
                             </div>
@@ -289,7 +289,7 @@
         etat:'',
         description: '',
         project_name: '',
-        equipe_id:5
+        equipe_id:null
        
        
       },
@@ -312,6 +312,15 @@
     },
 
     created() {
+      if (localStorage.getItem("role")) {
+        if (localStorage.getItem("role") === "admin") {
+          this.role = "admin"
+        } else {
+          this.role = "other"
+        }
+      } else {
+        this.role = "client"
+      }
       this.init()
     },
     methods:{
@@ -333,6 +342,7 @@
         console.log(this.form);
       },
       init(){
+       if(this.role == 'admin'){
        axios.get('projets').then((response)=>{
          console.log(response.data.projets)
         this.projects=response.data.projets
@@ -340,6 +350,14 @@
       axios.get('equipes').then((response)=>{
         this.teams=response.data.Equipes
       })
+       }
+      if(this.role == 'other'){
+       axios.get('projects').then((response)=>{
+         console.log(response.data.projets)
+        this.projects=response.data.projets
+      }) 
+       }
+       
       },
       onSubmit() {
         this.form.equipe_id = this.form.equipe_id.id
