@@ -6,6 +6,8 @@ use App\Models\Client;
 use App\Http\Requests\ClientRequest;
 use App\Http\Resources\ClientResource;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\AccessCredentials;
+use Illuminate\Support\Facades\Notification;
 
 class ClientController extends Controller
 {
@@ -106,14 +108,26 @@ class ClientController extends Controller
             ]);
         }
         else {
+            $password = $request->input('password');
             $client->update(([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
+                'password' => bcrypt($password),
                 'num_tel' => $request->input('num_tel'),
                 'raison_sociale' => $request->input('raison_sociale'),
                 'logo' => $request->input('CV'),
                 'etat' => $request->input('etat')
             ]));
+            $details = [
+                'greeting' => 'Hi '.$client->name,
+                'body' => 'Congratulations for becoming an official client of E-Build !',
+                'credentials' => 'Here are your account credentials:',
+                'email' => 'email : '.$client->email,
+                'password' => 'password : '.$password,
+                'url' => 'http://localhost:8001/login',
+                'thanks' => 'Thank you for choosing E-Build !',
+            ];
+            Notification::send($client, new AccessCredentials($details));
 
             return response()->json([
                 'status' => 200,

@@ -123,7 +123,9 @@ class SousTacheController extends Controller
                 'tache_id' => $request->input('tache_id'),
                 'titre' => $request->input('titre'),
                 'deadline' => $request->input('deadline'),
-                'description' => $request->input('description')
+                'description' => $request->input('description'),
+                'etat' => $request->input('etat')
+                
             ]);
 
             return response()->json([

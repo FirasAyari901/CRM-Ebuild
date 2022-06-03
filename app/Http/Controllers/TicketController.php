@@ -106,14 +106,14 @@ class TicketController extends Controller
     public function update(TicketRequest $request, Ticket $ticket)
     {
         //$client = Client::find(Auth::client()->id);
-        if(!$ticket->client) {
+        if(!$ticket) {
             return response()->json([
                 'status' => 401,
                 'message' => 'The ticket data does not exist'
             ]);
         }
         else {
-            $ticket = update(([
+            $ticket->update(([
                 'client_id' => $request->input('client_id'),
                 'projet_id' => $request->input('projet_id'),
                 'titre' => $request->input('titre'),

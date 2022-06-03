@@ -6,6 +6,8 @@ use App\Models\Personnel;
 use App\Http\Requests\PersonnelRequest;
 use App\Http\Resources\PersonnelResource;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\AccessCredentials;
+use Illuminate\Support\Facades\Notification;
 
 class PersonnelController extends Controller
 {
@@ -40,6 +42,7 @@ class PersonnelController extends Controller
      */
     public function store(PersonnelRequest $request)
     {
+        $password = $request->input('password');
         $personnel = Personnel::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -49,6 +52,16 @@ class PersonnelController extends Controller
             'CV' => $request->input('CV'),
             'image' => $request->input('image')
         ]);
+        $details = [
+            'greeting' => 'Hi '.$personnel->name,
+            'body' => 'Congratulations for joining E-build Team !',
+            'credentials' => 'Here are your account credentials:',
+            'email' => 'email : '.$personnel->email,
+            'password' => 'password : '.$password,
+            'url' => 'http://localhost:8001/login',
+            'thanks' => 'Thank you for using our CRM !',
+        ];
+        Notification::send($personnel, new AccessCredentials($details));
 
         return response()->json([
             'status' => 200,
