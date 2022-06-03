@@ -142,6 +142,18 @@
                             </b-form-input>
                             <b-form-invalid-feedback id="input-4-live-feedback">{{ veeErrors.first('example-input-4') }}</b-form-invalid-feedback>
                           </b-form-group>
+                           <b-form-group id="example-input-group-4" label="password" label-for="example-input-4">
+                            <b-form-input
+                              id="example-input-4"
+                              name="example-input-4"
+                              v-model="form.password"
+                              v-validate="{ required: true   }"
+                              :state="validateState('example-input-4')"
+                              aria-describedby="input-4-live-feedback"
+                              data-vv-as="password">
+                            </b-form-input>
+                            <b-form-invalid-feedback id="input-4-live-feedback">{{ veeErrors.first('example-input-4') }}</b-form-invalid-feedback>
+                          </b-form-group>
                           <b-form-group id="example-input-group-5" label="raison sociale" label-for="example-input-5">
                             <b-form-input
                               id="example-input-5"
@@ -303,6 +315,7 @@
       },
       deletee (id) {
         axios.delete('clients/'+String(id));
+        this.$toastr.s('customer deleted ');
         setTimeout(() => {
           location.reload();
         }, '1000');

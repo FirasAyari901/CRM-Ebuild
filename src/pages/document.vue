@@ -142,9 +142,7 @@
                               <div class="avaiabilty">
                                 <div class="text-success">{{ document.attributes.created_at.substr(0, 10) }}</div>
                             </div>
-                             <div class="avaiabilty ">
-                                <div class="text-primary">customer 1</div>
-                            </div>
+                        
                             <div class="avaiabilty ">
                                 <div class="text-success">document type : {{ document.type_doc }}</div>
                             </div>
@@ -153,7 +151,7 @@
                               </div>
                               <br>
                               <div class="price d-flex"> 
-                                <div class="text-muted mr-2">price HT</div>: {{ document.attributes.montant_HT }} TND
+                                <div class="text-muted mr-2">price HT</div>: 1500 TND
                               </div>
                               
                               <br>                               
@@ -178,7 +176,7 @@
             </div>
           </div>
       <!-- Container-fluid Ends-->
-     <div id="pdf" >
+     <div id="pdf" style="display:none" >
        <div class="row">
          <div class="col-8"> 
               <img
@@ -194,23 +192,23 @@
          <div class="col-2">
            <h1 style="color:red">FACTURE
            </h1>
-           <h3>N 025</h3>
+           <h3>N 1</h3>
          </div>
        </div>
-       <br><br><br><br><br><br><br><br>
+       <br><br><br><br><br><br>
        <div class="row">
          <div class="col-6" style="border-left: 1px solid #cecece;border-bottom: 1px solid #cecece;border-right: 1px solid #cecece;border-top: 5px solid red;">
           <h3>CLIENT</h3>
-          <h4>{{ client }}</h4>
+          <h4>Achref Hamouda</h4>
          </div>
          <div class="col-2">
 
          </div>
          <div class="col-4" style="border-left: 1px solid #cecece;border-bottom: 1px solid #cecece;border-right: 1px solid #cecece;border-top: 5px solid red;">
-          {{ date }}
+          27-05-2022
          </div>
        </div> 
-       <br><br><br><br><br><br>
+       <br><br><br><br>
 
       <b-table-simple style="border-top: 5px solid red;">
        <b-thead >
@@ -224,12 +222,19 @@
       </b-tr>
     </b-thead>
     <b-tbody>
-      <b-tr :key="index" v-for="(operation, index) in submittedOperations">
-        <b-td>QFDV</b-td>
-        <b-td>IHNJINNU</b-td>
+      <b-tr >
+        <b-td>1</b-td>
+        <b-td>Conception Hiérarchique du site</b-td>
         <b-td></b-td>
         <b-td>19%</b-td>
-        <b-td>J99UJ</b-td>
+        <b-td>1000</b-td>
+      </b-tr>
+       <b-tr >
+        <b-td>2</b-td>
+        <b-td>Webdesign de site Internet - Layout général</b-td>
+        <b-td></b-td>
+        <b-td>19%</b-td>
+        <b-td>500</b-td>
       </b-tr>
     </b-tbody>
     
@@ -251,9 +256,9 @@
     </b-thead>
     <b-tbody>
       <b-tr>
-        <b-td>22</b-td>
-        <b-td>43</b-td>
-        <b-td>56</b-td>
+        <b-td>19%</b-td>
+        <b-td>1500</b-td>
+        <b-td>285</b-td>
       </b-tr>
     </b-tbody>
     
@@ -267,22 +272,33 @@
       
     <b-tbody>
       <b-tr>
-        <b-td>22</b-td>
+        <b-td>TOTAL HT</b-td>
       </b-tr>
       <b-tr>
-        <b-td>22</b-td>
+        <b-td>BASE TVA</b-td>
       </b-tr>
       <b-tr>
-        <b-td>22</b-td>
+        <b-td>TOTAL TVA</b-td>
       </b-tr>
       <b-tr>
-        <b-td>22</b-td>
+        <b-td>Timbre fiscal</b-td>
       </b-tr>
     </b-tbody>
     
   </b-table-simple>
          </div>
   </div> 
+  <br><br><br><br>
+  <div class="row">
+         
+         <div class="col-8">
+
+         </div>
+         <div class="col-4" style="border-left: 1px solid #cecece;border-bottom: 1px solid #cecece;border-right: 1px solid #cecece;border-top: 5px solid red;">
+          <h1>NET À PAYER  1500</h1>
+         </div>
+       </div> 
+       <br><br><br>
         <ul>
           <h5 class="text-center">Réglement de Paiement :<br/></h5> 
           <li class="text-center"><h5>Avance de 20% du Montant Total TTC à la Commande</h5></li>
@@ -292,7 +308,22 @@
           <li class="text-center"><h5>maintenance serveur et déploiement</h5></li>
         </ul>
         <br/>
-        <hr class="hr"/>
+        <hr style="border-top: 5px solid red;" class="hr"/>
+        <br><br>
+        <div class="row"  >
+        
+          <div class="col-4">
+           <h6>INFORMATIONS ENTREPRISE</h6>
+          <h6>MF:1751386/T/A/M</h6> 
+          <h6>CONTACT: 25892403</h6>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <h6>INFORMATIONS BANCAIRE</h6> 
+                   <h6>Banque Attijar</h6>   
+                      <h6>IBAN 00004 00120 1200077036879 9</h6> 
+          </div>
+        </div>
      </div>
   </div>
 </template>
@@ -397,7 +428,11 @@ const datee = new Date(Date.now())
         return null;
       },  
       add() {
-        
+        const pdf = document.getElementById('pdf').innerHTML
+              const originalContent = window.document.body.innerHTML;
+              window.document.body.innerHTML = pdf;
+              window.print();
+              window.document.body.innerHTML = originalContent;
         this.client = this.form.client_id.name
         this.form.client_id = this.form.client_id.id
         this.form.type_doc = this.form.type_doc.text
@@ -412,11 +447,7 @@ const datee = new Date(Date.now())
            
               this.submittedDoc = res.data.document
               this.submittedOperations = res.data.operations
-              const pdf = document.getElementById('pdf').innerHTML
-              const originalContent = window.document.body.innerHTML;
-              window.document.body.innerHTML = pdf;
-              window.print();
-              window.document.body.innerHTML = originalContent;
+              
       
           });
           return;

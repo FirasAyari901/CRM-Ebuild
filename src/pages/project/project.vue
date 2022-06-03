@@ -40,7 +40,7 @@
                                   </div>
                                   <br>
                                   <b-card-text class="mb-0">{{task.attributes.description}}</b-card-text><br><br>
-                                  <feather v-if="role == 'admin'"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                  <feather v-if="role == 'admin'" @click="id_task = task.id"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
                                 <feather v-if="role == 'admin'" @click="deleteee(task.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </b-card>
 
@@ -111,6 +111,64 @@
                           </div>
                           </div>
             </b-modal>
+           <b-modal okTitle= '' cancelTitle= '' headerClass= 'p-2 border-bottom-0' footerClass = 'p-2 border-top-0' okVariant= 'seacndary' cancelVariant= 'seacndary' id="modal-update" size="lg" title="" :ok-disabled="true" :cancel-disabled="true">
+                             <div class="card">
+                        <div class="card-header">
+                            <h5>Update task</h5>
+                        </div>
+                
+                          <div>
+                            <b-form @submit.stop.prevent="updateee">
+                              <b-form-group id="example-input-group-1" label="Task title" label-for="example-input-1">
+                                <b-form-input
+                                  id="example-input-1"
+                                  name="example-input-1"
+                                  v-model="form.titre"
+                                  v-validate="{ required: true, min:3  }"
+                                  :state="validateState('example-input-1')"
+                                  aria-describedby="input-1-live-feedback"
+                                  data-vv-as="project name"
+                                ></b-form-input>
+
+                                <b-form-invalid-feedback id="input-1-live-feedback">{{ veeErrors.first('example-input-1') }}</b-form-invalid-feedback>
+                              </b-form-group>
+                              <b-form-group id="example-input-group-3" label="Description" label-for="example-input-3">
+                                <b-form-input
+                                  id="example-input-3"
+                                  name="example-input-3"
+                                  v-model="form.description"
+                                  v-validate="{ required: true ,min:3}"
+                                  :state="validateState('example-input-3')"
+                                  aria-describedby="input-3-live-feedback"
+                                  data-vv-as="description"
+                                ></b-form-input>
+                                <b-form-invalid-feedback id="input-3-live-feedback">{{ veeErrors.first('example-input-3') }}</b-form-invalid-feedback>
+
+                              </b-form-group>
+                            
+
+                                  <b-form-group id="example-input-group-7" label="Deadline" label-for="example-input-7">
+                                   <b-form-datepicker id="example-datepickr" v-model="form.deadline" class="mb-2"></b-form-datepicker>
+
+                                <b-form-invalid-feedback id="input-7-live-feedback">{{ veeErrors.first('example-input-7') }}</b-form-invalid-feedback>
+                              </b-form-group>
+                              <b-form-group id="example-input-group-2" label="Status" label-for="example-input-2">
+                                  <multiselect  v-model="form.etat" :options="options" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
+     
+                                <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
+                              </b-form-group>
+                              <b-form-group id="example-input-group-2" label="Staff" label-for="example-input-2">
+                                  <multiselect  v-model="form.personnel_id" :options="staff" label="name" :searchable="false" :close-on-select="true" :show-labels="true" placeholder="Pick a status"></multiselect>
+
+                                <b-form-invalid-feedback id="input-2-live-feedback">{{ veeErrors.first('example-input-2') }}</b-form-invalid-feedback>
+                              </b-form-group>
+
+                              <b-button type="submit" variant="primary">Submit</b-button>
+                              <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+                            </b-form>
+                          </div>
+                          </div>
+            </b-modal> 
         <!-- Container-fluid Ends-->
     </div>
 </template>
@@ -147,7 +205,8 @@
         staff:[],
        project :null,
        tasks :null,
-       role:null
+       role:null,
+       id_task:null
       }},
     created() {
       if (localStorage.getItem("role")) {
@@ -165,9 +224,9 @@
              this.tasks = res.data.taches
              console.log(res.data.taches);
           })
-      axios.get('personnels').then((response)=>{
-        this.staff=response.data.staff;
-      });   
+      
+        this.staff=[{id:39,name:"Firas Ayari"}]
+        
        }
        if(this.role == 'other'){
          axios.get('projects/'+String(this.id)).then(res =>{
@@ -190,6 +249,29 @@
           axios.post('taches',this.form).then(res =>{
             if (res.data.status == 200){
               this.$toastr.s('Task added ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            } else{
+            }
+          });
+          return;
+        });
+       
+
+    },
+    updateee() {
+        this.form.etat = this.form.etat.name
+        this.form.personnel_id = this.form.personnel_id.id
+        console.log(this.id_task);
+        this.$validator.validateAll().then(result => {
+          if (!result) {
+            this.$toastr.i('correct the errors'); 
+            return;
+          }
+          axios.put('taches/'+this.id_task,this.form).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('Task updated ');
               setTimeout(() => {
                 location.reload();
               }, '500');

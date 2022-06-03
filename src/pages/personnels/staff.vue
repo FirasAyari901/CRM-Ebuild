@@ -334,6 +334,8 @@
       },
       deletee (id) {
         axios.delete('personnels/'+String(id));
+       this.$toastr.s('Staff deleted ');
+
         setTimeout(() => {
           location.reload();
         }, '1000');

@@ -239,7 +239,7 @@
                                         <div class="col-6 text-primary" >{{ project.attributes.deadline }}</div>
                                       </div>
                                     </div>
-                                    <feather v-if="role == 'admin'" @click="recuperer(project.id)"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
+                                    <feather v-if="role == 'admin'" @click="project_id = project.id"  type="edit" stroke="#ffcd01" v-b-modal.modal-update></feather> 
                                  <feather v-if="role == 'admin'" @click="deleteee(project.id)" style="margin-left:3px;" type="trash-2" stroke="red" ></feather>
                                 </div>
                               </div>
@@ -304,7 +304,7 @@
         teams: [],
         
         format: 'yyyy-MM-dd',
-
+        project_id:null,
         
         limitMultiValue:[],
      
@@ -381,28 +381,14 @@
         });
 
     },
-    recuperer(id){
-      axios.get('projets/'+String(id)).then((response)=>{
-      this.date_debut = response.data.attributes.date_debut
-      this.deadline = response.data.attributes.deadline 
-      this.etat = response.data.attributes.etat 
-      this.description = response.data.attributes.description
-      this.project_name = response.data.project_name
-      this.equipe_id = this.teams.find(function(item, index) {
-      	if(item.id == this.equipe_id)
-	       	return true;
-});
-      }) 
-      
-      
-    },
+
      updateee() {
         this.form.equipe_id = this.form.equipe_id.id
         this.form.etat = this.form.etat.name
         console.log(this.form);
        
-          axios.post('projets',this.form).then(res =>{
-              this.$toastr.s('project added ');
+          axios.put('projets/'+this.project_id,this.form).then(res =>{
+              this.$toastr.s('project updated ');
               setTimeout(() => {
                 location.reload();
               }, '500');

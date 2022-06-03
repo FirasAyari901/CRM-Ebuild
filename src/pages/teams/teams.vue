@@ -75,8 +75,9 @@
                                           </div>
                                           <div class="form-group col-md-12">
                                             <div class="col-form-label">Select stuff </div>
-                                            <multiselect  v-model="singleValue" :options="options" label="name" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a value"></multiselect>
-                                          </div>
+                                           <multiselect  v-model="multiValue" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" 
+                                               label="name" track-by="name" :options="staff" :multiple="true" :taggable="true" ></multiselect>
+                                         </div>
                                         </div>
                                         <b-button class="btn "  onclick="submitBookMark()" type="submit" variant="secondary">Update </b-button>
                                       </form>
@@ -177,7 +178,7 @@
         this.staff=response.data.staff
         console.log(response.data.staff)
       })
-      
+      this.say(12)
       },
        
 
@@ -191,9 +192,23 @@
  
       },
       updateTeam(){
-       const pseudo = document.getElementById("pseudo").value
-       console.log(pseudo)
-       console.log(this.singleValue)
+       const ids = this.multiValue.map(x => x.id);
+       const team = {
+          pseudo:this.pseudoupdate,
+          personnels:ids
+    
+        }
+        console.log(team);
+        axios.put('equipes/'+this.team.id,team).then(res =>{
+            if (res.data.status == 200){
+              this.$toastr.s('Team updated ');
+              setTimeout(() => {
+                location.reload();
+              }, '500');
+            } else{
+            }
+          });
+       
       },
       addTeam(){
        const ids = this.multiValue.map(x => x.id);
